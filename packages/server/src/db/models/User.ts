@@ -9,6 +9,7 @@ export default class User extends Model {
     public password!: string;
     public email!: string;
     public avatar!: string;
+    public verified!: boolean;
 }
 
 User.init(
@@ -44,6 +45,10 @@ User.init(
             allowNull: false,
             defaultValue: "default-1.png",
         },
+        verified: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        }
     },
     {
         tableName: "users",
