@@ -7,6 +7,7 @@ import session from 'express-session';
 import connectRedis from 'connect-redis';
 import {UserSession} from './types';
 import redisClient from './db/redis';
+import {verifySession} from './utils/verifySession';
 
 // import Routes
 import {router as userRouter} from './api/user';
@@ -17,7 +18,6 @@ declare module "express-session" {
         user?: UserSession;
     }
 }
-
 
 dotnev.config();
 const RedisStore = connectRedis(session); 
@@ -42,7 +42,7 @@ app.use(session({
     }
 }));
 
-app.use(`${API_PREFIX}/user`, userRouter);
+app.use(`${API_PREFIX}/user`, verifySession, userRouter);
 app.use(`${API_PREFIX}/auth`, authRouter);
 
 app.get("/", (_: Request, res: Response) => {

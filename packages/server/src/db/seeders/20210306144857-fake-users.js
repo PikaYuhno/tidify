@@ -10,7 +10,7 @@ module.exports = {
                     username: 'Max_Muster',
                     firstName: 'Max',
                     lastName: 'Mustermann',
-                    password: await bcrypt.has("1234", 10),
+                    password: await bcrypt.hash("1234", 10),
                     email: 'maxmuster@gmail.com',
                     avatar: 'default-avatar'
                 });

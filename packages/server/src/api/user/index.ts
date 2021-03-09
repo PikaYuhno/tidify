@@ -78,7 +78,6 @@ router.put("/:userId", async (req: Request, res: Response) => {
     return res.status(200).json({data: createdUser, message: 'Successfully created user!', success: true});
 });
 
-
 /*
  * Delete a user.
  * @route {DELETE} /api/v1/users/:userId
@@ -91,4 +90,3 @@ router.delete("/:userId", async (req: Request, res: Response) => {
 
     return res.status(200).json({data: null, message: 'Successfully deleted user!', success: true})
 });
-

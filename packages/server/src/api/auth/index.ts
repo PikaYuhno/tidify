@@ -3,9 +3,10 @@ export const router = Router();
 import User from '../../db/models/User';
 import bcrypt from 'bcrypt';
 import {loginSchema, registerSchema} from '../../schemas/authSchema';
-import {sendVerificationEmail} from '../../utils/sendEmail';
-import {genConfirmationURL} from '../../utils/genConfirmationURL';
+import {sendChangePWEmail, sendVerificationEmail} from '../../utils/sendEmail';
+import {genConfirmationCode} from '../../utils/genConfirmationCode';
 import redisClient from '../../db/redis';
+import {genChangePwURL} from '../../utils/genChangePwURL';
 
 /*
  * Login route
@@ -68,7 +69,7 @@ router.post("/register", async (req: Request, res: Response) => {
     const createdUser = await User.create(newUser);
 
     // send confirmation mail
-    sendVerificationEmail({to: createdUser.email}, await genConfirmationURL(createdUser.id));
+    sendVerificationEmail({to: createdUser.email}, await genConfirmationCode(createdUser.id));
 
     return res.status(200).json({data: createdUser, message: 'Successfully registered user!', success: true});
 });
@@ -88,17 +89,68 @@ router.post("/logout", async (req: Request, res: Response) => {
 
 /*
  * Route for confirming account
- * @route {PUT} /api/v1/auth/confirm/:id 
+ * @route {PUT} /api/v1/auth/confirm/ 
+ * @bodyparam {String} code
  */
-router.put("/confirm/:id", async (req: Request, res: Response) => {
-    const id = req.params.id;
-    let userId = await redisClient.get(id);
+router.put("/confirm/", async (req: Request, res: Response) => {
+    const {code} = req.body;
+    if (!code) 
+        return res.status(400).json({data: null, message: 'No code provided', success: false});
+
+    let userId = await redisClient.get(code);
     if(!userId)
-        return res.status(400).json({data: null, message: 'Invalid or expired token!', success: false});
-    await redisClient.del(id);
+        return res.status(400).json({data: null, message: 'Invalid or expired code!', success: false});
+    await redisClient.del(code);
 
     const result = await User.update({verified: true}, {where: {id: userId}});
     return res.status(200).json({data: result, message: 'Successfully verified your account!', success: true});
 });
 
+/*
+ * Route for sending link for changing password
+ * @route {POST} /api/v1/auth/reset/password
+ * @bodyparam {String} email
+ */
+router.post("/reset/password/new", async (req: Request, res: Response) => {
+    const {email} = req.body;      
+    if (!email)
+        return res.status(400).json({message: 'Email not provided!', success: false});
+    const user: User | null = await User.findOne({where: {email}});
+    if(!user) 
+        return res.status(400).json({message: 'User not found!', success: false});
+    sendChangePWEmail({
+        to: user.email
+    }, await genChangePwURL(user.id));
 
+    return res.status(200).json({message: 'Successfully sent link for changing password!', success: true});
+});
+
+/*
+ * Route for verifying token
+ * @route {PUT} /api/v1/auth/reset/password/
+ * @bodyparam {String} token
+ * @bodyparam {String} oldPassword
+ * @bodyparam {String} newPassword
+ */
+// @todo validated newPassword
+router.put("/reset/password/", async (req: Request, res: Response) => {
+    const {token} = req.body; 
+    const { oldPassword, newPassword } = req.body;    
+    const userId = await redisClient.get(token);
+    if (!userId) 
+        return res.status(400).json({message: 'Link is expired!', success: false});
+
+    const user = await User.findOne({where: {id: userId}});
+    if (!user)
+        return res.status(400).json({message: 'User not found!', success: false});
+
+    const match = await bcrypt.compare(oldPassword, user.password);
+    if(!match)
+        return res.status(400).json({data: null, message: 'Wrong password!', success: false});
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await User.update({password: hashedPassword}, {where: {id: userId}});
+
+    return res.status(200).json({message: 'Successfully updated password!', success: true})
+});
