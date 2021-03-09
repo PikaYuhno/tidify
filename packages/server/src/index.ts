@@ -5,6 +5,10 @@ import morgan from 'morgan';
 import dotnev from 'dotenv';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
+import AdminBro from 'admin-bro';
+import AdminBroExpress from '@admin-bro/express';
+import AdminBroSequelize from '@admin-bro/sequelize';
+
 import {UserSession} from './types';
 import redisClient from './db/redis';
 import {verifySession} from './utils/verifySession';
@@ -12,6 +16,7 @@ import {verifySession} from './utils/verifySession';
 // import Routes
 import {router as userRouter} from './api/user';
 import {router as authRouter} from './api/auth';
+import User from './db/models/User';
 
 declare module "express-session" {
     interface Session {
@@ -20,7 +25,13 @@ declare module "express-session" {
 }
 
 dotnev.config();
+AdminBro.registerAdapter(AdminBroSequelize);
 const RedisStore = connectRedis(session); 
+const adminBro = new AdminBro({
+    rootPath: '/admin',
+    resources: [User],
+})
+const adminBroRouter = AdminBroExpress.buildRouter(adminBro);
 const app = express();
 
 const PORT = process.env.PORT || 4000;
@@ -41,6 +52,8 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 7 // 7 Days
     }
 }));
+app.use(adminBro.options.rootPath, adminBroRouter);
+
 
 app.use(`${API_PREFIX}/user`, verifySession, userRouter);
 app.use(`${API_PREFIX}/auth`, authRouter);
