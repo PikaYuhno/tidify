@@ -12,7 +12,7 @@ import AdminBroSequelize from '@admin-bro/sequelize';
 import {UserSession} from './types';
 import redisClient from './db/redis';
 import {verifySession} from './utils/verifySession';
-
+import {requireRoles} from './utils/requireRoles';
 // import Routes
 import {router as userRouter} from './api/user';
 import {router as authRouter} from './api/auth';
@@ -52,7 +52,7 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 7 // 7 Days
     }
 }));
-app.use(adminBro.options.rootPath, adminBroRouter);
+app.use(adminBro.options.rootPath, verifySession, requireRoles(['admin']), adminBroRouter);
 
 
 app.use(`${API_PREFIX}/user`, verifySession, userRouter);

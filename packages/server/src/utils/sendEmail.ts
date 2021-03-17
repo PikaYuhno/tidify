@@ -1,8 +1,8 @@
 import nodemailer,{SendMailOptions} from 'nodemailer';
 
-export const sendVerificationEmail = async (mailOptions: SendMailOptions, code: string) => {
-    let testAccount = await nodemailer.createTestAccount();
-    let transporter = nodemailer.createTransport({
+export const sendVerificationEmail = async (mailOptions: SendMailOptions, code: string): Promise<void> => {
+    const testAccount = await nodemailer.createTestAccount();
+    const transporter = nodemailer.createTransport({
         host: "smtp.ethereal.email",
         port: 587,
         secure: false, // true for 465, false for other ports
@@ -12,7 +12,7 @@ export const sendVerificationEmail = async (mailOptions: SendMailOptions, code: 
         },
     });
 
-    let info = await transporter.sendMail({
+    const info = await transporter.sendMail({
         from: `"Fred Foo 👻" <${testAccount.user}>`,
         to: mailOptions.to,
         subject: "Verification Code - Tidify", 
@@ -24,10 +24,10 @@ export const sendVerificationEmail = async (mailOptions: SendMailOptions, code: 
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 }
 
-export const sendChangePWEmail = async (mailOptions: SendMailOptions, url: string) => {
-    let testAccount = await nodemailer.createTestAccount();
+export const sendChangePWEmail = async (mailOptions: SendMailOptions, url: string): Promise<void> => {
+    const testAccount = await nodemailer.createTestAccount();
 
-    let transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         host: "smtp.ethereal.email",
         port: 587,
         secure: false, // true for 465, false for other ports
@@ -37,7 +37,7 @@ export const sendChangePWEmail = async (mailOptions: SendMailOptions, url: strin
         },
     });
 
-    let info = await transporter.sendMail({
+    const info = await transporter.sendMail({
         from: `"Fred Foo 👻" <${testAccount.user}>`,
         to: mailOptions.to,
         subject: "Verification Code - Tidify", 

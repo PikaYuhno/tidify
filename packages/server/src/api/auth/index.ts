@@ -22,24 +22,28 @@ router.post("/login", async (req: Request, res: Response) => {
         validatedObj = await loginSchema.validate(body); 
     } catch (e) {
         console.error(e);
-        return res.status(400).json({data: null, message: e.errors[0], success: false});
+        return res.status(400).json({message: e.errors[0], success: false});
     }
     // check if user exists
     const user: User | null = await User.findOne({where: {email: validatedObj.email}});
     if(!user)
-        return res.status(400).json({data: null, message: 'User not found!', success: false});
+        return res.status(400).json({ message: 'User not found!', success: false});
+
+    // check if user is locked
+    if (user.locked) 
+        return res.status(400).json({message: 'Your account is locked!', success: false});
 
     // check if user is verified
     if(!user.verified) 
-        return res.status(400).json({data: null, message: 'Please verify your account first', success: false});
+        return res.status(400).json({ message: 'Please verify your account first', success: false});
     // compare password
     const match = await bcrypt.compare(validatedObj.password, user.password);
     if(!match)
-        return res.status(400).json({data: null, message: 'Wrong password!', success: false});
+        return res.status(400).json({ message: 'Wrong password!', success: false});
     // add session
-    req.session.user = {userId: user.id, username: user.username};
+    req.session.user = {userId: user.id, username: user.username, role: user.role};
 
-    return res.status(200).json({data: null, message: 'Successfully logged in!', success: true})
+    return res.status(200).json({ message: 'Successfully logged in!', success: true})
 });
 
 /*
@@ -64,7 +68,7 @@ router.post("/register", async (req: Request, res: Response) => {
     // hash password
     const hash = await bcrypt.hash(validatedObj.password, 10);
     // create user
-    let newUser = {...validatedObj, password: hash};
+    const newUser = {...validatedObj, password: hash};
     console.log("New User", newUser);
     const createdUser = await User.create(newUser);
 
@@ -97,7 +101,7 @@ router.put("/confirm/", async (req: Request, res: Response) => {
     if (!code) 
         return res.status(400).json({data: null, message: 'No code provided', success: false});
 
-    let userId = await redisClient.get(code);
+    const userId = await redisClient.get(code);
     if(!userId)
         return res.status(400).json({data: null, message: 'Invalid or expired code!', success: false});
     await redisClient.del(code);
@@ -129,13 +133,12 @@ router.post("/reset/password/new", async (req: Request, res: Response) => {
  * Route for verifying token
  * @route {PUT} /api/v1/auth/reset/password/
  * @bodyparam {String} token
- * @bodyparam {String} oldPassword
  * @bodyparam {String} newPassword
  */
 // @todo validated newPassword
 router.put("/reset/password/", async (req: Request, res: Response) => {
     const {token} = req.body; 
-    const { oldPassword, newPassword } = req.body;    
+    const { newPassword } = req.body;    
     const userId = await redisClient.get(token);
     if (!userId) 
         return res.status(400).json({message: 'Link is expired!', success: false});
@@ -143,10 +146,6 @@ router.put("/reset/password/", async (req: Request, res: Response) => {
     const user = await User.findOne({where: {id: userId}});
     if (!user)
         return res.status(400).json({message: 'User not found!', success: false});
-
-    const match = await bcrypt.compare(oldPassword, user.password);
-    if(!match)
-        return res.status(400).json({data: null, message: 'Wrong password!', success: false});
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 

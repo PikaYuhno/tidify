@@ -9,6 +9,8 @@ export default class User extends Model {
     public password!: string;
     public email!: string;
     public avatar!: string;
+    public role!: string;
+    public locked!: boolean;
     public verified!: boolean;
 }
 
@@ -44,6 +46,14 @@ User.init(
             type: DataTypes.STRING(255),
             allowNull: false,
             defaultValue: "default-1.png",
+        },
+        role: {
+            type: DataTypes.STRING(255),
+            defaultValue: 'user',
+        },
+        locked: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
         },
         verified: {
             type: DataTypes.BOOLEAN,
