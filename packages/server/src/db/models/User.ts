@@ -1,20 +1,18 @@
-import {Model, DataTypes} from "sequelize";
-import {sequelize} from "../connection";
+import { Model, DataTypes, Optional } from "sequelize";
+import { sequelize } from "../connection";
+import {UserAttributes} from '@tidify/common';
 
-export default class User extends Model {
-    public id!: number;
-    public username!: string;
-    public firstName!: string;
-    public lastName!: string;
-    public password!: string;
-    public email!: string;
-    public avatar!: string;
-    public role!: string;
-    public locked!: boolean;
-    public verified!: boolean;
+interface UserCreationAttributes
+    extends Optional<UserAttributes, 'id' | 'role' | 'verified' | 'locked' | 'avatar'> { }
+
+interface UserInstance
+    extends Model<UserAttributes, UserCreationAttributes>,
+    UserAttributes {
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
-User.init(
+const User = sequelize.define<UserInstance>('User',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -59,9 +57,6 @@ User.init(
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         }
-    },
-    {
-        tableName: "users",
-        sequelize: sequelize,
     }
-);
+)
+export default User;

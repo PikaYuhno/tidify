@@ -8,7 +8,7 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "types": []
+        "typeRoots": ["../../node_modules/@types", "./@types"]
     },
     "exclude": [
         "node_modules"
