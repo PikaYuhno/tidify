@@ -1,4 +1,3 @@
-
 import {Response, Request } from 'express';
 
 export const requireRoles = (roles: string[]) =>  (req: Request, res: Response, next: any): void | Response => {
