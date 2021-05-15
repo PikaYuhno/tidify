@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 export const router = Router();
-import { createUserSchema, updateUserSchema } from '@tidify/common';
+import { createUserSchema, updateUserSchema, createGuildSchema } from '@tidify/common';
+import * as yup from 'yup';
 
 // import Models
 import User from '../../db/models/User';
@@ -114,4 +115,57 @@ router.get("/guilds", async (req: Request, res: Response) => {
     return res.status(200).json({ data: guilds, message: 'Successfully found all guilds!', success: true});
 });
 
+/** 
+ * Create a new guild
+ * @route {POST} /api/v1/users/guilds
+ * @bodyparam guild object that is defined in the schemas section
+*/
+router.get("/guilds", async (req: Request, res: Response) => {
+    const userId = req.session.user!.userId
+    
+    let validatedGuild: yup.InferType<typeof createGuildSchema> = null;
+    
+    try {
+        validatedGuild = await createGuildSchema.validate(req.body);
+    } catch (e) {
+        console.error(e);
+        return res.status(400).json({ message: e.errors[0], success: false});
+    }
+    
+    const createdGuild = await Guild.create({ ...validatedGuild, ownerId: userId });
 
+    return res.status(200).json({ data: createdGuild, message: 'Successfully created Guild!', success: true});
+});
+
+/** 
+ * Get all todos
+ * @route {GET} /api/v1/users/todos
+*/
+router.get("/todos", async (req: Request, res: Response) => {
+    
+});
+
+/** 
+ * Create a new todo
+ * @route {POST} /api/v1/users/todos
+ * @bodyparam guild object that is defined in the schemas section
+*/
+router.get("/todos", async (req: Request, res: Response) => {
+    
+});
+
+/** 
+ * Update a todo
+ * @route {PUT} /api/v1/users/todos/:todoId
+*/
+router.get("/todos", async (req: Request, res: Response) => {
+    
+});
+
+/** 
+ * Delete a todo
+ * @route {DELETE} /api/v1/users/todos/:todoId
+*/
+router.get("/todos", async (req: Request, res: Response) => {
+    
+});

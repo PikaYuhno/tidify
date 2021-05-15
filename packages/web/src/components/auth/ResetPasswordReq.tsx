@@ -26,6 +26,7 @@ class ResetPasswordReq extends React.Component {
                         <button type="submit" disabled={isSubmitting}>
                             Submit
                        </button>
+                       <div className="container"></div>
                     </Form>
                 )}
             </Formik>

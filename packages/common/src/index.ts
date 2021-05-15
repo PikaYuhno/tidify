@@ -14,3 +14,5 @@ export * from './db/models/User';
 export * from './schemas/authSchemas';
 export * from './schemas/userSchemas';
 export * from './schemas/channelSchemas';
+export * from './schemas/guildSchemas';
+export * from './schemas/messageSchemas';
