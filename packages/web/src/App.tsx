@@ -7,8 +7,8 @@ import Home from './pages/Home';
 import ResetPassword from './pages/ResetPassword';*/
 
 const Login = React.lazy(() => import("./pages/Login"));
-const Register = React.lazy(() => import("./pages/Register"));
-const Home = React.lazy(() => import("./pages/Home"));
+const Register = React.lazy(() => import("./pages/Register/index"));
+const Home = React.lazy(() => import("./pages/Home/index"));
 const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 
 const App: React.FC = () => {
