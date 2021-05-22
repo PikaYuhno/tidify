@@ -1,10 +1,7 @@
 import styled from 'styled-components';
-import { createGlobalStyle } from 'styled-components';
-
-
 
 export const Main = styled.div`
-  min-width: 400px;
+  min-width: 300px;
   width: 30%;
   margin: auto;
   margin-top: 2.5%;
@@ -12,11 +9,12 @@ export const Main = styled.div`
   font-size: 20px;
   color: white;
   border-radius: 15px;
-  background-color: #414141;
-  min-height: 600px;
+  background-color: var(--primary);
+  min-height: 500px;
+  
 `
 export const Inputs = styled.div`
-  background-color: #313131;
+  background-color: var(--secondary);
   border-radius: 15px;
   height: 75%;
 
@@ -43,11 +41,7 @@ export const InputBox = styled.div<{ width: string, margin: string }>`
   color: black;
 `
 
-export const GlobalStyle = createGlobalStyle`
-  body {
-    background: #525252;
-  }
-`
+
 
 export const TempInputBox = styled.input`
   margin-left: 4%;
@@ -56,11 +50,43 @@ export const TempInputBox = styled.input`
     outline: none;
   }
 `
+export const OutBox = styled.div`
+  display: flex;
+  background-color: var(--primary);
+  border-radius: 15px;
+  margin: 10% 2%;
+  padding: 4px 0;
+`
+
+export const UploadAv = styled.div`
+  
+  
+  display: flex;
+  flex-direction: column;
+  > button{
+    background-color: var(--white);
+    color: var(--black);
+    height: 15%;
+    width: 40%;
+    font-size: small;
+    padding: 1%;
+    border-radius: 15px;
+    font-weight: bold;
+    min-width: 85px;
+    &:focus{
+      outline: none;
+    }
+  }
+  > StyledText{
+    height: 5vh;
+  }
+`
+
 export const AvatarBox = styled.div`
   background-color: white;
   border-radius: 50%;
-  width: 25%;
-  height: auto;
+  width: 150px;
+  height: 150px;
   margin: 5%;
   min-width:150px;
 `

@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { GlobalStyles } from './globalStyles';
 
 /*import Login from './pages/Login';
 import Register from './pages/Register';
@@ -14,6 +15,7 @@ const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const App: React.FC = () => {
 	return (
 		<>
+			<GlobalStyles />
 			<Router>
 				<Switch>
 					<Suspense fallback={<div>Loading...</div>}>
