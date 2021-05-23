@@ -5,6 +5,8 @@ export const router = Router();
 import {InferType} from 'yup';
 import {createChannelSchema} from '@tidify/common'
 
+// Channels
+
 /**
  * Get all channels
  * @route {GET} /api/v1/guilds/:guildId/channels
@@ -87,3 +89,72 @@ router.delete("/:guildId/channels/:channelId", async (req: Request, res: Respons
 
     return res.status(200).json({message: 'Successfully delete channel!', success: true});
 });
+
+// Announcements
+
+/**
+ * Get all announcements
+ * @route {GET} /api/v1/guilds/:guildId/announcements/
+ */
+router.get("/:guildId/announcements", async (req: Request, res: Response) => {
+    
+});
+
+/**
+ * Create a new announcement
+ * @route {POST} /api/v1/guilds/:guildId/announcements/
+ */
+router.post("/:guildId/announcements", async (req: Request, res: Response) => {
+
+});
+
+/**
+ * Update an announcement
+ * @route {PUT} /api/v1/guilds/:guildId/announcements/:announcementId
+ */
+router.post("/:guildId/announcements/:announcementId", async (req: Request, res: Response) => {
+
+});
+
+
+/**
+ * Delete an announcement
+ * @route {PUT} /api/v1/guilds/:guildId/announcements/:announcementId
+ */
+router.delete("/:guildId/announcements/:announcementId", async (req: Request, res: Response) => {
+});
+
+// Boards
+
+/**
+ * Get all boards
+ * @route {GET} /api/v1/guilds/:guildId/boards/
+ */
+router.get("/:guildId/boards", async (req: Request, res: Response) => {
+    
+});
+
+/**
+ * Create a new board
+ * @route {POST} /api/v1/guilds/:guildId/boards/
+ */
+router.post("/:guildId/boards", async (req: Request, res: Response) => {
+
+});
+
+/**
+ * Update a board
+ * @route {PUT} /api/v1/guilds/:guildId/boards/:boardId
+ */
+router.post("/:guildId/boards/:boardId", async (req: Request, res: Response) => {
+
+});
+
+
+/**
+ * Delete an announcement
+ * @route {PUT} /api/v1/guilds/:guildId/boards/:boardId
+ */
+router.delete("/:guildId/boards/:bordId", async (req: Request, res: Response) => {
+});
+

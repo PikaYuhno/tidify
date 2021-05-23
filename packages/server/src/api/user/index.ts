@@ -123,7 +123,7 @@ router.get("/guilds", async (req: Request, res: Response) => {
 router.get("/guilds", async (req: Request, res: Response) => {
     const userId = req.session.user!.userId
     
-    let validatedGuild: yup.InferType<typeof createGuildSchema> = null;
+    let validatedGuild: yup.InferType<typeof createGuildSchema>;
     
     try {
         validatedGuild = await createGuildSchema.validate(req.body);

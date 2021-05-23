@@ -31,5 +31,6 @@ router.post("/boards/:boardId/columns/:columnId", async (req: Request, res: Resp
  * Create a new column
  * @route {DELETE} /api/v1/boards/:boardId/columns/:columnId
  */
-router.post("/boards/:boardId/columns/:columnId", async (req: Request, res: Response) => {
+router.post("/boards/h:boardId/columns/:columnId", async (req: Request, res: Response) => {
+    
 });

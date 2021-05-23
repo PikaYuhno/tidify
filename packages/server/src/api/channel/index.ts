@@ -51,7 +51,7 @@ router.post("/:channelId/messages", async (req: Request, res: Response) => {
     if (!channel)
         return res.status(400).json({ message: 'Channel not found!', success: false });
 
-    let validatedMessage: yup.InferType<typeof createMessageSchema> = null;
+    let validatedMessage: yup.InferType<typeof createMessageSchema>;
     try {
         validatedMessage = await createMessageSchema.validate(req.body);
     } catch (e) {
@@ -59,7 +59,7 @@ router.post("/:channelId/messages", async (req: Request, res: Response) => {
         return res.status(400).json({message: e.errors[0], success: false});
     }
     
-    const createdMessage = await Message.create({ ...validatedMessage, channelId: channel.id, authorId: userId})
+    const createdMessage = await Message.create({ ...validatedMessage, channelId: channel.id, authorId: userId, guildId: channel.guildId})
     
     return res.status(200).json({ data: createdMessage, message: 'Successfully created Message!', success: true});
 });
@@ -72,6 +72,17 @@ router.post("/:channelId/messages", async (req: Request, res: Response) => {
  * @bodyparam message object that is defined in the schemas section.
  */
 router.put("/:channelId/messages/:messageId", async (req: Request, res: Response) => {
+    const channelId = req.params.channelId;
+    const messageId = req.params.messageId;
+
+    const channel = await Channel.findOne({
+        where: { id: channelId }
+    });
+    
+    if (!channel)   
+        return res.status(400).json({ message: 'Channel not found!', success: false});
+    
+    
 });
 
 /**
