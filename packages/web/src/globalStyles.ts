@@ -1,14 +1,16 @@
-import {createGlobalStyle} from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-  body {
-    background: var(--bgcol);
-  }
-  :root{
-    --black: #000;
-    --white: #FFF;
-    --bgcol: #525252;
-    --primary: #414141;
-    --secondary: #313131;
-  }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body, #root {
+    height: 100%;
+}
+:root {
+    --background-primary: #99d0ce;
+    --text-primary: white;
+}
 `

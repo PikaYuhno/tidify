@@ -1,37 +1,35 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { GlobalStyles } from './globalStyles';
 
-/*import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
-import ResetPassword from './pages/ResetPassword';*/
-
-const Login = React.lazy(() => import("./pages/Login"));
-const Register = React.lazy(() => import("./pages/Register/index"));
-const Home = React.lazy(() => import("./pages/Home/index"));
-const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import ResetPassword from './components/auth/ResetPassword';
+import RequestPasswordReset from "./components/auth/RequestPasswordReset";
+import Home from "./components/guild/Home";
+import Alert from "./components/shared/Alert";
+import PrivateRoute from "./components/auth/PrivateRoute";
 
 const App: React.FC = () => {
-	return (
-		<>
-			<GlobalStyles />
-			<Router>
-				<Switch>
-					<Suspense fallback={<div>Loading...</div>}>
-						<Route path="/" exact component={Home} />
-						<Route path="/auth/login" exact component={Login} />
-						<Route path="/auth/register" exact component={Register} />
-						<Route
-							path="/auth/reset/password/:token"
-							exact
-							component={ResetPassword}
-						/>
-					</Suspense>
-				</Switch>
-			</Router>
-		</>
-	);
+    return (
+        <>
+            <GlobalStyles />
+            <Alert />
+            <Router>
+                <Switch>
+                    <PrivateRoute path="/" exact component={Home} />
+                    <Route path="/auth/login" exact component={Login} />
+                    <Route path="/auth/register" exact component={Register} />
+                    <Route path="/auth/req/password" exact component={RequestPasswordReset} />
+                    <Route
+                        path="/auth/reset/password/:token"
+                        exact
+                        component={ResetPassword}
+                    />
+                </Switch>
+            </Router>
+        </>
+    );
 };
 
 export default App;

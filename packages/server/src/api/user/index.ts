@@ -17,6 +17,14 @@ router.get("/", async (_: Request, res: Response) => {
 });
 
 /**
+ * Get logged in user.
+ * @route {GET} /api/v1/users/me
+ */
+router.get("/me", async (req: Request, res: Response) => {
+    return res.status(200).json({ data: req.session.user || null, message: 'Sucessfully fetched User!', success: true });
+});
+
+/**
  * Get one user.
  * @route {GET} /api/v1/users/:userId
  * @routeparam {number} :userId is the unique id for the user. 

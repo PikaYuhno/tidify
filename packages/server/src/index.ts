@@ -61,7 +61,7 @@ app.use(session({
 app.use(adminBro.options.rootPath, verifySession, requireRoles(['admin']), adminBroRouter);
 
 
-app.use(`${API_PREFIX}/user`, verifySession, userRouter);
+app.use(`${API_PREFIX}/users`, verifySession, userRouter);
 app.use(`${API_PREFIX}/channel`, channelRouter);
 app.use(`${API_PREFIX}/auth`, authRouter);
 

@@ -1,37 +1,65 @@
 import React from 'react';
-import {Formik, Field, Form} from 'formik';
+import { Formik, Form, Field } from 'formik';
+import { History } from 'history';
+import { Redirect, withRouter } from 'react-router-dom';
+import { Button } from '@chakra-ui/button';
+import { VStack, FormControl, FormLabel, Input, FormErrorMessage, Text } from '@chakra-ui/react';
+import AuthFormWrapper from './AuthFormWrapper';
+import { useMutation } from 'react-query';
+import { confirmCode } from '../../api/auth';
+import FormInput from './FormInput';
+import { useAlerts } from '../../store/useAlerts';
 
-
-class ConfirmCode extends React.Component {
-    render() {
-        return (
-            <Formik
-                initialValues={{code: ''}}
-                onSubmit={async (values, {setSubmitting}) => {
-                    setSubmitting(true);
-                    const res = await fetch(`/api/v1/auth/confirm`, {
-                        method: 'PUT',
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(values)
-                    });
-                    const json = await res.json();
-                    console.log(json);
-                    setSubmitting(false);
-                }}
-            >
-                {({isSubmitting}) => (
-                    <Form>
-                        <Field type="text" name="code" placeholder="code"/>
-                        <button type="submit" disabled={isSubmitting}>
-                            Submit
-                       </button>
-                    </Form>
-                )}
-            </Formik>
-        );
-    }
+type ConfirmCodeProps = {
+    history: History;
 }
 
-export default ConfirmCode;
+const ConfirmCode: React.FC<ConfirmCodeProps> = ({ history }) => {
+    const [redirect, setRedirect] = React.useState(false);
+    const {add} = useAlerts();
+    const mutation = useMutation(confirmCode, {
+        onSuccess: (data) => { 
+            if (data.success) {
+                add(data.message, "success");
+                setRedirect(true);
+            }
+        }
+    });
+
+    if (redirect) return <Redirect to="/auth/login" />
+
+    return (
+        <Formik
+            initialValues={{ code: '' }}
+            onSubmit={async (values, { setSubmitting }) => {
+                setSubmitting(true);
+                mutation.mutate(values.code);
+                setSubmitting(false);
+            }}
+        >
+            {({ isSubmitting, errors, touched }) => (
+                <Form style={{ padding: '20px', borderRadius: '10px', background: '#3f9996' }}>
+                    <VStack spacing="10px">
+                        <FormInput
+                            isInvalid={!!errors.code && touched.code}
+                            placeholder="Code" type="text" name="code"
+                            errorMessage={errors.code}
+                            label="Code:"
+                        />
+                        <Button
+                            w="100%"
+                            mt={4}
+                            bg="#99d0ce"
+                            isLoading={isSubmitting}
+                            type="submit"
+                        >
+                            Submit
+                                </Button>
+                    </VStack>
+                </Form>
+            )}
+        </Formik>
+    );
+}
+
+export default withRouter(ConfirmCode);

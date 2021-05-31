@@ -3,14 +3,19 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@craco/craco": "^6.1.2",
+		"@chakra-ui/react": "^1.6.2",
+		"@emotion/react": "^11",
+		"@emotion/styled": "^11",
 		"formik": "^2.2.6",
+		"framer-motion": "^4",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
+		"react-query": "^3.16.0",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "4.0.3",
 		"styled-components": "^5.2.1",
-		"styled-icons": "^10.29.0"
+		"uuid": "^8.3.2",
+		"zustand": "^3.5.1"
 	},
 	"devDependencies": {
 		"@types/node": "^12.0.0",
@@ -18,16 +23,13 @@
 		"@types/react-dom": "^17.0.0",
 		"@types/react-router-dom": "^5.1.7",
 		"@types/styled-components": "^5.1.7",
-		"autoprefixer": "^9",
-		"postcss": "^7",
-		"tailwindcss": "npm:@tailwindcss/postcss7-compat",
 		"typescript": "^4.1.2"
 	},
 	"proxy": "http://localhost:4000",
 	"scripts": {
-		"start": "craco start",
-		"build": "craco build",
-		"test": "craco test",
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
