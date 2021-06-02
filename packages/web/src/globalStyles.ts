@@ -9,6 +9,9 @@ export const GlobalStyles = createGlobalStyle`
 html, body, #root {
     height: 100%;
 }
+main {
+    margin-left: 80px;
+}
 :root {
     --background-primary: #99d0ce;
     --text-primary: white;

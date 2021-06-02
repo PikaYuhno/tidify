@@ -1,12 +1,10 @@
-import { Field, Form, Formik } from 'formik';
-import styled from 'styled-components';
+import { Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
 import React from 'react';
 import ConfirmCode from './ConfirmCode';
 import { Redirect } from 'react-router-dom';
 import AuthFormWrapper from './AuthFormWrapper';
-import { VStack, FormControl, FormLabel, Input, FormErrorMessage, Button, Text, HStack } from '@chakra-ui/react';
+import { VStack, Button, Text, HStack } from '@chakra-ui/react';
 import { useMe } from '../../hooks/useMe';
 import Loader from '../shared/Loader';
 import { useMutation } from 'react-query';
@@ -65,7 +63,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
                         {confirmCode ? "Confirm Code" : "Login"}
                     </Text>
                     {!confirmCode && <>
-                        <Form style={{ padding: '20px', borderRadius: '10px', background: '#3f9996' }}>
+                        <Form style={{ padding: '20px', borderRadius: '10px', background: 'var(--background-secondary)' }}>
                             <VStack spacing="10px">
                                 <FormInput
                                     isInvalid={!!errors.email && touched.email}
@@ -82,9 +80,10 @@ const Login: React.FC<LoginProps> = ({ history }) => {
                                 <Button
                                     w="100%"
                                     mt={4}
-                                    bg="#99d0ce"
+                                    bg="var(--background-secondary-alt)"
                                     isLoading={isSubmitting}
                                     type="submit"
+                                    color="var(--text-primary)"
                                 >
                                     Submit
                                 </Button>
@@ -93,10 +92,10 @@ const Login: React.FC<LoginProps> = ({ history }) => {
                         </Form>
 
                         <HStack marginTop="10px">
-                            <Button colorScheme="teal" size="xs" onClick={() => history.push("/")}>
+                            <Button bg="var(--background-secondary)" color="var(--text-primary)" size="xs" onClick={() => history.push("/")}>
                                 back to home
                             </Button>
-                            <Button colorScheme="teal" size="xs" onClick={() => history.push("/auth/register")}>
+                            <Button bg="var(--background-secondary)" color="var(--text-primary)" size="xs" onClick={() => history.push("/auth/register")}>
                                 new account?
                             </Button>
                         </HStack>

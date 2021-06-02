@@ -1,10 +1,10 @@
 import React from "react";
-import { AlertIcon, AlertDescription, CloseButton, Box, Alert as CAlert, VStack } from "@chakra-ui/react";
+import { AlertIcon, AlertDescription, CloseButton, Alert as CAlert, VStack } from "@chakra-ui/react";
 import styled from "styled-components";
 import { useAlerts } from '../../store/useAlerts';
 
 const Alert: React.FC = () => {
-    const { alerts, add, remove } = useAlerts();
+    const { alerts, remove } = useAlerts();
 
     return (
         <Container>

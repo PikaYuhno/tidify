@@ -1,10 +1,9 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import { History } from 'history';
 import { Redirect, withRouter } from 'react-router-dom';
 import { Button } from '@chakra-ui/button';
-import { VStack, FormControl, FormLabel, Input, FormErrorMessage, Text } from '@chakra-ui/react';
-import AuthFormWrapper from './AuthFormWrapper';
+import { VStack, } from '@chakra-ui/react';
 import { useMutation } from 'react-query';
 import { confirmCode } from '../../api/auth';
 import FormInput from './FormInput';
@@ -14,11 +13,11 @@ type ConfirmCodeProps = {
     history: History;
 }
 
-const ConfirmCode: React.FC<ConfirmCodeProps> = ({ history }) => {
+const ConfirmCode: React.FC<ConfirmCodeProps> = () => {
     const [redirect, setRedirect] = React.useState(false);
-    const {add} = useAlerts();
+    const { add } = useAlerts();
     const mutation = useMutation(confirmCode, {
-        onSuccess: (data) => { 
+        onSuccess: (data) => {
             if (data.success) {
                 add(data.message, "success");
                 setRedirect(true);

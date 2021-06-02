@@ -1,0 +1,28 @@
+// Overwrite variables for react-big-calendar
+
+// Import styles
+@import 'react-big-calendar/lib/sass/styles';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body, #root {
+    height: 100%;
+    background-color: var(--background-primary);
+}
+main {
+    margin-left: 80px;
+}
+:root {
+    --background-primary: #706779;
+    --background-secondary: #8F8698;
+    --background-secondary-alt: #9B91A1;
+
+    --text-primary: white;
+
+    /* Constants */
+    --tidify-logo-height: 100px;
+    --grid-gap: 10px;
+}

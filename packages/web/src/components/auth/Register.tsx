@@ -1,11 +1,9 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
-import styled from 'styled-components';
+import { Formik, Form } from 'formik';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
 import ConfirmCode from './ConfirmCode';
 import { Redirect } from 'react-router-dom';
-import { FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, VStack, Button, Container, Image, Center as Box, Text, Center, HStack } from '@chakra-ui/react';
+import { VStack, Button,  Text, HStack } from '@chakra-ui/react';
 import AuthFormWrapper from './AuthFormWrapper';
 import { useMutation } from 'react-query';
 import { register } from '../../api/auth';
@@ -68,7 +66,7 @@ const Register: React.FC<RegisterProps> = ({ history }) => {
                     </Text>
                     {!confirmCode &&
                         <>
-                            <Form style={{ padding: '20px', borderRadius: '10px', background: '#3f9996' }}>
+                            <Form style={{ padding: '20px', borderRadius: '10px', background: 'var(--background-secondary)' }}>
                                 <VStack spacing="10px">
                                     <FormInput isInvalid={!!errors.firstName && touched.firstName}
                                         placeholder="first name" type="text" name="firstName"
@@ -112,10 +110,10 @@ const Register: React.FC<RegisterProps> = ({ history }) => {
                             </Form>
 
                             <HStack marginTop="10px">
-                                <Button colorScheme="teal" size="xs">
+                                <Button bg="var(--background-secondary)" color="var(--text-primary)" size="xs">
                                     back to home
                             </Button>
-                                <Button colorScheme="teal" size="xs" onClick={() => history.push("/auth/login")}>
+                                <Button bg="var(--background-secondary)" color="var(--text-primary)" size="xs" onClick={() => history.push("/auth/login")}>
                                     go to login
                             </Button>
                             </HStack>
@@ -123,7 +121,7 @@ const Register: React.FC<RegisterProps> = ({ history }) => {
                     }
                     {confirmCode && <>
                         <ConfirmCode />
-                        <Button colorScheme="teal" size="xs" marginTop="10px">
+                        <Button bg="var(--background-secondary)" color="var(--text-primary)" size="xs" marginTop="10px">
                             Go Back
                         </Button>
                     </>}

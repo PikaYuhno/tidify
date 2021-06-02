@@ -1,11 +1,10 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import { RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
-import { VStack, FormControl, FormLabel, Input, FormErrorMessage, Button, Text } from '@chakra-ui/react';
+import { VStack, Button, Text } from '@chakra-ui/react';
 import AuthFormWrapper from './AuthFormWrapper';
 import { useMutation } from 'react-query';
-import { confirmCode, resetPassword } from '../../api/auth';
+import { resetPassword } from '../../api/auth';
 import FormInput from './FormInput';
 
 interface MatchParams {
@@ -14,7 +13,6 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
-// @todo add styling
 const ResetPassword: React.FC<Props> = ({ match }) => {
 
     const mutation = useMutation(resetPassword, {});
@@ -68,16 +66,5 @@ const ResetPassword: React.FC<Props> = ({ match }) => {
     );
 }
 
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    height: 100%;
-    width: 100%;
-    max-height: 90vh;
-`;
 
 export default ResetPassword;

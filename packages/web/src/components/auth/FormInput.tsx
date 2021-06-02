@@ -22,7 +22,7 @@ const FormInput: React.FC<Props> = ({ isInvalid, errorMessage, label, children, 
                 <Field {...rest} as={Input} focusBorderColor="pink.400" type={type === "password" ? (show ? "text" : "password") : (type)} variant="filled" />
                 {type && type === "password" && <>
                     <InputRightElement width="4.5rem">
-                        <Button h="1.75rem" size="sm" onClick={() => setShow(!show)}>
+                        <Button h="1.75rem" size="sm" bg="var(--background-secondary)" color="var(--text-primary)" onClick={() => setShow(!show)}>
                             {show ? "Hide" : "Show"}
                         </Button>
                     </InputRightElement>

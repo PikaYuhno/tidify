@@ -1,27 +1,27 @@
 import { Spinner } from '@chakra-ui/spinner';
-import styled from 'styled-components'
+import { Box } from '@chakra-ui/react';
 
-export interface Props {};
+export interface Props { };
 
 const Loader: React.FC<Props> = (props) => {
     return (
-        <Container>
-            <Spinner size="xl" color="var(--background-primay)" />
-        </Container>
+        <Box
+            position="absolute"
+            h="100vh"
+            w="100vw"
+            top="0"
+            right="right"
+
+            d="flex"
+            justifyContent="center"
+            alignItems="center"
+
+        >
+
+            <Spinner size="xl" color="var(--background-primary)" />
+        </Box>
     );
 }
-
-const Container = styled.div`
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    right: 0;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
 
 
 export default Loader;

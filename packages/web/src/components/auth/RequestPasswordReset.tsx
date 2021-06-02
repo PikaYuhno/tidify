@@ -1,14 +1,14 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import styled from 'styled-components';
 import AuthFormWrapper from './AuthFormWrapper';
-import { VStack, FormControl, FormLabel, Input, FormErrorMessage, Button, Text } from '@chakra-ui/react';
+import { VStack, Button, Text } from '@chakra-ui/react';
 import { useMutation } from 'react-query';
-import { confirmCode, reqPasswordReset } from '../../api/auth';
+import { reqPasswordReset } from '../../api/auth';
 import FormInput from './FormInput';
 
 const RequestPasswordReset: React.FC = () => {
-    const [message, setMessage] = React.useState(false);
+    const [_, setMessage] = React.useState(false);
 
     const mutation = useMutation(reqPasswordReset, {
         onSuccess: (data) => { data.success && setMessage(true) }
@@ -51,16 +51,5 @@ const RequestPasswordReset: React.FC = () => {
         </Formik>
     );
 }
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    height: 100%;
-    width: 100%;
-    max-height: 90vh;
-`;
 
 export default RequestPasswordReset;

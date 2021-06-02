@@ -1,16 +1,23 @@
-import { useMe } from "../../hooks/useMe";
+import MyCalendar from "../calendar/Calendar";
+import Chat from "../chat/Chat";
+import Layout from "../shared/Layout";
 import Loader from "../shared/Loader";
+import ChannelSidebar from "./ChannelSidebar";
+import Navigation from "./Navigation";
 
-export interface IHomeProps {};
+export interface IHomeProps { };
 
-const Home: React.FC<IHomeProps> = (props) => {
-    const {data, isLoading } = useMe(); 
-
-    if (isLoading) return <Loader />
-
-    return (<>
-        <code>{JSON.stringify(data, null, 2)}</code>
-    </>);
+const Home: React.FC<IHomeProps> = () => {
+    return (
+        <>
+            <Navigation />
+            <Layout>
+                <ChannelSidebar />
+                {/*<Chat />*/}
+                <MyCalendar />
+            </Layout>
+        </>
+    );
 }
 
 export default Home;
