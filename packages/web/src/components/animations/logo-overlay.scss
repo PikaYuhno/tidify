@@ -1,0 +1,18 @@
+.logo-overlay-div {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  outline: 0;
+  overflow: hidden;
+  background: var(--background-secondary-alt);
+  z-index: 5;
+}
+
+.logo-overlay-exit {
+  opacity: 1;
+}
+
+.logo-overlay-exit-active {
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}

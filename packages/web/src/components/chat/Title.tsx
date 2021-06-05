@@ -10,12 +10,12 @@ const Title: React.FC<Props> = ({ name }) => {
         <>
             <Box 
                 flex="1"
-                borderRadius="15px"
+                borderRadius="10px"
                 bg="var(--background-secondary-alt)"
                 margin="10px"
                 p="10px"
             >
-                <Text fontSize="2xl" color="var(--text-primary)" d="flex" alignItems="center" h="100%">
+                <Text fontSize="2xl" color="var(--text-primary)" d="flex" alignItems="center" h="100%" fontWeight="bold">
                     <Hash color="var(--text-primary)" />{name}
                 </Text>
 

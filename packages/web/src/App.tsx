@@ -8,7 +8,6 @@ import RequestPasswordReset from "./components/auth/RequestPasswordReset";
 import Home from "./components/guild/Home";
 import Alert from "./components/shared/Alert";
 import Calendar from "./components/calendar/Calendar";
-//import PrivateRoute from "./components/auth/PrivateRoute";
 
 const App: React.FC = () => {
     return (

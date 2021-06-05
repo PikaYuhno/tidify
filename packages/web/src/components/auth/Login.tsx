@@ -12,6 +12,7 @@ import { login } from '../../api/auth';
 import { History } from 'history';
 import FormInput from './FormInput';
 import { useAlerts } from '../../store/useAlerts';
+import LoginTransition from "../animations/LoginTransition";
 
 type LoginProps = {
     history: History;
@@ -24,15 +25,15 @@ const schema = yup.object().shape({
 
 const Login: React.FC<LoginProps> = ({ history }) => {
     const [confirmCode, setConfirmCode] = React.useState(false);
-    console.log("ConfirmCOde", confirmCode);
+    const [animationState, startAnimation] = React.useState(false);
     const { data, isLoading } = useMe();
     const { add } = useAlerts();
     const mutation = useMutation(login, {
         onSuccess: (data) => {
             add(data.message, data.success ? "success" : "error")
             setConfirmCode(data.redirect ? data.redirect : false)
-            if (!data.redirect)
-                history.push("/");
+            if (!data.redirect && data.success)
+                startAnimation(true);
         }
     });
 
@@ -110,6 +111,7 @@ const Login: React.FC<LoginProps> = ({ history }) => {
                 </AuthFormWrapper>
             )}
             </Formik>
+            <LoginTransition animationState={animationState} startAnimation={startAnimation} redirectUrl="/" />
         </>
     );
 }

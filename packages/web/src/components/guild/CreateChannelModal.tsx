@@ -11,12 +11,12 @@ const CreateChannelModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, 
 
     return (
         <>
-            <Modal isOpen={isOpen!} onClose={onClose!}>
+            <Modal isOpen={isOpen!} onClose={onClose!} isCentered >
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Create new channel</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
+                    <ModalBody >
                         <Formik
                         initialValues={{ name: '' }}
                         onSubmit={() => {}}

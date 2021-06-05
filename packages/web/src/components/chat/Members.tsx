@@ -9,19 +9,15 @@ const Members: React.FC<Props> = (props) => {
             flex="1"
             h="100%"
             bg="var(--background-secondary-alt)"
-            p="10px"
+            p="5px"
         >
-            <VStack>
-
-            </VStack>
-            <VStack
-                h="auto"
-                bg="var(--background-secondary)"
-                borderRadius="10px"
-                p="5px"
-            >
-                <MemberItem name="PikaYuhno" />
-                <MemberItem name="Teamleiter" />
+            <VStack p="5px" w="100%">
+                <MemberSubList title="Captain">
+                    <MemberItem name="Teamleiter" />
+                </MemberSubList>
+                <MemberSubList title="Members">
+                    <MemberItem name="PikaYuhno" />
+                </MemberSubList>
             </VStack>
         </Box>
     );
@@ -31,16 +27,17 @@ type MemberSubListProps = {
     title: string
 }
 
-const MemberSubList: React.FC<MemberSubListProps> = ({ title }) => {
+const MemberSubList: React.FC<MemberSubListProps> = ({ title, children }) => {
     return (
         <VStack
             h="auto"
             bg="var(--background-secondary)"
             borderRadius="10px"
+            w="100%"
             p="5px"
         >
-            <MemberItem name="PikaYuhno" />
-            <MemberItem name="Teamleiter" />
+            <Text color="white" textAlign="start" w="100%" paddingRight="5px" textTransform="uppercase" fontWeight="bold" fontSize="14px">{title}</Text>
+            {children}
         </VStack>
     );
 }
@@ -51,9 +48,15 @@ type MemberItemProps = {
 
 const MemberItem: React.FC<MemberItemProps> = ({ name }) => {
     return (
-        <HStack justifyContent="flex-start" w="100%" p="5px">
+        <HStack justifyContent="flex-start" w="100%" p="5px" sx={{
+            "&:hover": {
+                bg: 'var(--background-secondary-alt)',
+                borderRadius: '10px',
+                cursor: 'pointer'
+            }
+        }}>
             <Avatar size="sm" />
-            <Text color="var(--text-primary)">{name}</Text>
+            <Text color="var(--text-primary)" fontWeight="bold">{name}</Text>
         </HStack>
     );
 }

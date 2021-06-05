@@ -1,28 +1,73 @@
-// Overwrite variables for react-big-calendar
-
-// Import styles
-@import 'react-big-calendar/lib/sass/styles';
-
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-html, body, #root {
-    height: 100%;
-    background-color: var(--background-primary);
+html,
+body,
+#root {
+  height: 100%;
+  background-color: var(--background-primary);
 }
 main {
-    margin-left: 80px;
+  margin-left: 80px;
 }
 :root {
-    --background-primary: #706779;
-    --background-secondary: #8F8698;
-    --background-secondary-alt: #9B91A1;
+  --background-primary: #706779;
+  --background-secondary: #8f8698;
+  --background-secondary-alt: #9b91a1;
 
-    --text-primary: white;
+  --text-primary: white;
 
-    /* Constants */
-    --tidify-logo-height: 100px;
-    --grid-gap: 10px;
+  /* Constants */
+  --tidify-logo-height: 100px;
+  --grid-gap: 10px;
 }
+
+/*.animation-box {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  outline: 0;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 200vw;
+    height: 200vw;
+    background: var(--background-secondary-alt);
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 40%;
+    animation: fill 4s cubic-bezier(0.3, 0.01, 0.07, 0.98) 1;
+    z-index: 1;
+  }
+}
+
+@keyframes fill {
+  from {
+    transform: translate(-50%, 1000px) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -300px) rotate(180deg);
+  }
+}*/
+
+// Overwrite variables for react-big-calendar
+$event-bg: #706779;
+$event-border: #706779;
+$event-outline: var(--background-secondary);
+
+$btn-color: white;
+$btn-bg: #8f8698;
+$btn-border: #706779;
+
+$calendar-border: #706779;
+$cell-border: #706779;
+
+$time-selection-bg-color: white;
+$date-selection-bg-color: white;
+
+// Import styles
+@import "react-big-calendar/lib/sass/styles";
