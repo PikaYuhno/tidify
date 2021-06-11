@@ -8,6 +8,7 @@ import RequestPasswordReset from "./components/auth/RequestPasswordReset";
 import Home from "./components/guild/Home";
 import Alert from "./components/shared/Alert";
 import Calendar from "./components/calendar/Calendar";
+import LandingPage from "./components/landing/LandingPage";
 
 const App: React.FC = () => {
     return (
@@ -15,7 +16,8 @@ const App: React.FC = () => {
             <Alert />
             <Router>
                 <Switch>
-                    <Route path="/" exact component={Home} />
+                    <Route path="/" exact component={LandingPage} />
+                    <Route path="/app" exact component={Home} />
                     <Route path="/calendar" exact component={Calendar} />
                     <Route path="/auth/login" exact component={Login} />
                     <Route path="/auth/register" exact component={Register} />

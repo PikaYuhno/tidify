@@ -5,7 +5,7 @@ interface Props {};
 const MembersTable: React.FC<Props> = () => {
     return (
         <>
-            <Table>
+            <Table color="white">
                 <Thead>
                     <Tr borderColor="var(--background-secondary)">
                         <Th color="var(--background-primary)">Avatar</Th>

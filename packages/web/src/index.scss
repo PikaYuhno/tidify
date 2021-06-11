@@ -21,38 +21,8 @@ main {
 
   /* Constants */
   --tidify-logo-height: 100px;
-  --grid-gap: 10px;
+  --grid-gap: 20px;
 }
-
-/*.animation-box {
-  position: relative;
-  height: 100vh;
-  width: 100vw;
-  outline: 0;
-  overflow: hidden;
-
-  &::after {
-    content: "";
-    position: absolute;
-    width: 200vw;
-    height: 200vw;
-    background: var(--background-secondary-alt);
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 40%;
-    animation: fill 4s cubic-bezier(0.3, 0.01, 0.07, 0.98) 1;
-    z-index: 1;
-  }
-}
-
-@keyframes fill {
-  from {
-    transform: translate(-50%, 1000px) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -300px) rotate(180deg);
-  }
-}*/
 
 // Overwrite variables for react-big-calendar
 $event-bg: #706779;
@@ -68,6 +38,11 @@ $cell-border: #706779;
 
 $time-selection-bg-color: white;
 $date-selection-bg-color: white;
+
+// Change these 3 variables
+$out-of-range-color: white;
+$out-of-range-bg-color: #c9c1cc;
+$today-highlight-bg: #8c7e9a;
 
 // Import styles
 @import "react-big-calendar/lib/sass/styles";

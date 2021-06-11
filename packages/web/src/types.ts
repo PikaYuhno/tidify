@@ -16,3 +16,9 @@ export type ResetPassword = {
     confirmPassword: string;
     token: string;
 }
+
+export type Response<T> = {
+    data: T;
+    message: string;
+    success: boolean; 
+}

@@ -3,9 +3,11 @@ import ReactDOM from "react-dom";
 import App from "./App";
 
 import { ChakraProvider } from "@chakra-ui/react"
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 
 import "./index.scss";
+
+const queryCache = new QueryCache();
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -13,6 +15,7 @@ const queryClient = new QueryClient({
 			refetchOnWindowFocus: false,
 		},
 	},
+    queryCache
 });
 
 ReactDOM.render(

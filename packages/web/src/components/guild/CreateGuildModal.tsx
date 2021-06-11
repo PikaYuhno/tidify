@@ -1,9 +1,10 @@
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, UseDisclosureProps } from '@chakra-ui/react';
-import { ChannelAttributes } from '@tidify/common';
+import { GuildAttributes } from '@tidify/common';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { createGuild } from '../../api/guild';
+import { useMe } from '../../hooks/useMe';
 import { Response } from '../../types';
 import FormInput from '../auth/FormInput';
 
@@ -13,19 +14,22 @@ export interface Props {
 
 const CreateChannelModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, children }) => {
 
+    const { data, isLoading } = useMe();
+
     const queryClient = useQueryClient();
 
-
     const mutation = useMutation(createGuild, {
-        onMutate: (name: string) => {
-            queryClient.cancelQueries("channels");
+        onMutate: async (name: string) => {
+            await queryClient.cancelQueries("guilds");
 
-            const snapshot = queryClient.getQueryData<Response<ChannelAttributes[]>>("channels");
+            const snapshot = queryClient.getQueryData<Response<GuildAttributes[]>>("guilds");
 
-            snapshot && queryClient.setQueryData<Response<ChannelAttributes[]>>("channels", prev => ({
+            console.log("Snapshot", snapshot);
+
+            snapshot && queryClient.setQueryData<Response<GuildAttributes[]>>("guilds", prev => ({
                 data: [
                     ...snapshot.data,
-                    { name, id: Math.random(), guildId: 2 },
+                    { name, id: Math.random(), ownerId: data.data.userId },
                 ],
                 message: prev!.message,
                 success: prev!.success
@@ -35,10 +39,10 @@ const CreateChannelModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, 
         },
         onError: (_, __, context) => {
             if (context?.snapshot) {
-                queryClient.setQueryData<Response<ChannelAttributes[]>>('channels', context.snapshot);
+                queryClient.setQueryData<Response<GuildAttributes[]>>('guilds', context.snapshot);
             }
         },
-        onSettled: () => queryClient.invalidateQueries("channels"),
+        onSettled: () => queryClient.invalidateQueries("guilds"),
     })
 
     return (
@@ -46,22 +50,26 @@ const CreateChannelModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, 
             <Modal isOpen={isOpen!} onClose={onClose!} isCentered >
                 <ModalOverlay />
                 <ModalContent bg="var(--background-secondary)">
-                    <ModalHeader color="white">Create new channel</ModalHeader>
+                    <ModalHeader color="white">Create new Guild</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody
                         paddingBottom="24px"
                     >
                         <Formik
                             initialValues={{ name: '' }}
-                            onSubmit={(values) => {
+                            onSubmit={(values, { setSubmitting }) => {
+                                setSubmitting(true);
                                 mutation.mutate(values.name);
+
+                                onClose && onClose();
+                                setSubmitting(false);
                             }}
                         >
                             {({ isSubmitting, errors, touched }) => (
                                 <Form>
                                     <FormInput
                                         isInvalid={!!errors.name && touched.name}
-                                        name="name" type="text" placeholder="Channel name"
+                                        name="name" type="text" placeholder="Guild name"
                                         errorMessage={errors.name}
                                         label="Name"
                                     />

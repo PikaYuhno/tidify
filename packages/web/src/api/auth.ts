@@ -1,5 +1,5 @@
-import { BASE_URL } from '../../constants';
-import { ResetPassword, UserLogin, UserRegister } from '../../types';
+import { BASE_URL } from '../constants';
+import { ResetPassword, UserLogin, UserRegister } from '../types';
 
 export const getMe = () => fetch(`${BASE_URL}/api/v1/users/me`).then(r => r.json());
 

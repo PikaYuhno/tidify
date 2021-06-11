@@ -19,7 +19,7 @@ const MyCalendar: React.FC = () => {
                 events={myEventsList}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: '100%', width: '100%' }}
+                style={{ height: '100%', width: '100%', color: 'white' }}
             />
         </BoxWrapper>
     );

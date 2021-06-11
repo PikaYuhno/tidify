@@ -9,10 +9,12 @@ type IconWrapper = {
         placement: Placement;
     };
     p?: string;
+    h?: string;
+    w?: string;
     onClick?: () => void;
 }
 
-const IconWrapper: React.FC<IconWrapper> = ({ icon: Icon, tooltip, p, onClick }) => {
+const IconWrapper: React.FC<IconWrapper> = ({ icon: Icon, tooltip, p, onClick, w, h }) => {
     const WrappedIcon = (<Box
         p={p || '3px'}
         sx={{
@@ -22,9 +24,13 @@ const IconWrapper: React.FC<IconWrapper> = ({ icon: Icon, tooltip, p, onClick })
                 cursor: 'pointer'
             }
         }}
+        d="flex"
+        justifyContent="center"
+        alignItems="center"
         onClick={onClick}
     >
-        <Icon color="var(--text-primary)" />
+        <Icon color="var(--text-primary)" width={w || '24px'} height={h || '24px'} />
+
     </Box>);
     return (
         <>
