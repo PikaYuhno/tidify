@@ -3,7 +3,8 @@ import { ChannelAttributes } from '@tidify/common';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { createGuild } from '../../api/guild';
+import { createChannel, getChannels } from '../../api/channel';
+import { useSelectedGuild } from '../../store/useSelectedGuild';
 import { Response } from '../../types';
 import FormInput from '../auth/FormInput';
 
@@ -15,9 +16,10 @@ const CreateChannelModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, 
 
     const queryClient = useQueryClient();
 
+    const selectedGuild = useSelectedGuild(state => state.selectedGuild);
 
-    const mutation = useMutation(createGuild, {
-        onMutate: (name: string) => {
+    const mutation = useMutation(createChannel, {
+        onMutate: (data: {name: string, guildId: number}) => {
             queryClient.cancelQueries("channels");
 
             const snapshot = queryClient.getQueryData<Response<ChannelAttributes[]>>("channels");
@@ -25,7 +27,7 @@ const CreateChannelModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, 
             snapshot && queryClient.setQueryData<Response<ChannelAttributes[]>>("channels", prev => ({
                 data: [
                     ...snapshot.data,
-                    { name, id: Math.random(), guildId: 2 },
+                    { name: data.name, id: Math.random(), guildId: data.guildId },
                 ],
                 message: prev!.message,
                 success: prev!.success
@@ -41,6 +43,7 @@ const CreateChannelModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, 
         onSettled: () => queryClient.invalidateQueries("channels"),
     })
 
+    if (!selectedGuild) return null;
     return (
         <>
             <Modal isOpen={isOpen!} onClose={onClose!} isCentered >
@@ -53,8 +56,11 @@ const CreateChannelModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, 
                     >
                         <Formik
                             initialValues={{ name: '' }}
-                            onSubmit={(values) => {
-                                mutation.mutate(values.name);
+                            onSubmit={(values, {setSubmitting}) => {
+                                setSubmitting(true);
+                                mutation.mutate({name: values.name, guildId: selectedGuild.id});
+                                onClose!();
+                                setSubmitting(false);
                             }}
                         >
                             {({ isSubmitting, errors, touched }) => (

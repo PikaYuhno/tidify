@@ -12,11 +12,11 @@ const Members: React.FC<Props> = (props) => {
             p="5px"
         >
             <VStack p="5px" w="100%">
-                <MemberSubList title="Captain">
+                {/*<MemberSubList title="Captain">
                     <MemberItem name="Teamleiter" />
-                </MemberSubList>
+    </MemberSubList>*/}
                 <MemberSubList title="Members">
-                    <MemberItem name="PikaYuhno" />
+                    <MemberItem name="Muaz_Ahmed" />
                 </MemberSubList>
             </VStack>
         </Box>

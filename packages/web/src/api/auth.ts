@@ -58,3 +58,10 @@ export const resetPassword = async (data: ResetPassword) => {
     });
     return res.json();
 }
+
+export const logout = async () => {
+    const res = await fetch(`/api/v1/auth/logout`, {
+        method: 'POST',
+    });
+    return res.json();
+}

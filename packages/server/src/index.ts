@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { createConnection, sequelize } from './db/connection';
+import { Server } from 'http';
 import cors from 'cors';
 import morgan from 'morgan';
 import dotnev from 'dotenv';
@@ -8,18 +9,19 @@ import connectRedis from 'connect-redis';
 import AdminBro from 'admin-bro';
 import AdminBroExpress from '@admin-bro/express';
 import AdminBroSequelize from '@admin-bro/sequelize';
-import vizql from 'vizql';
 
 import { UserSession } from './types';
 import redisClient from './db/redis';
 import { verifySession } from './utils/verifySession';
 import { requireRoles } from './utils/requireRoles';
 import {CLIENT_HOST} from './constants';
+import wsServer from './api/ws/chat';
 
 // import Routes
 import { router as userRouter } from './api/user';
 import { router as authRouter } from './api/auth';
 import { router as channelRouter } from './api/channel';
+import { router as guildRouter } from './api/guild';
 
 import User from './db/models/User';
 
@@ -62,10 +64,9 @@ app.use(adminBro.options.rootPath, verifySession, requireRoles(['admin']), admin
 
 
 app.use(`${API_PREFIX}/users`, verifySession, userRouter);
-app.use(`${API_PREFIX}/channel`, channelRouter);
+app.use(`${API_PREFIX}/channels`, verifySession, channelRouter);
+app.use(`${API_PREFIX}/guilds`, verifySession, guildRouter);
 app.use(`${API_PREFIX}/auth`, authRouter);
-
-app.get("/", vizql(sequelize).pageRoute);
 
 const testConnection = async () => {
     let retries = 5;
@@ -84,4 +85,5 @@ const testConnection = async () => {
 testConnection().then(async () => {
     await sequelize.sync();
 });
-app.listen(PORT, () => console.log(`🚀 Started Server on port ${PORT}`));
+const server: Server = app.listen(PORT, () => console.log(`🚀 Started Server on port ${PORT}`));
+wsServer(server);

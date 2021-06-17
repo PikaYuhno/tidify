@@ -9,6 +9,7 @@ import Logo from '../../assets/logo.png'
 import { scrollbarStyles } from "../../utils/scrollbarStyles";
 import { useSelectedGuild } from "../../store/useSelectedGuild";
 import CornerLogo from "../shared/CornerLogo";
+import { useSelectedChannel } from "../../store/useSelectedChannel";
 
 interface Props {
 
@@ -46,7 +47,7 @@ const Navigation: React.FC<Props> = (props) => {
                 <Divider w="80%" />
 
                 {!isLoading && data.data.map((guild: GuildAttributes) => (
-                    <Guild guild={guild} isSelected={selectedGuild?.id === guild.id} />
+                    <Guild key={guild.id} guild={guild} isSelected={selectedGuild?.id === guild.id} />
                 ))}
 
                 <GuildAddButton onClick={handleAddGuild} />
@@ -65,8 +66,9 @@ type GuildProps = {
 
 const Guild: React.FC<GuildProps> = ({ guild, isSelected }) => {
     const select = useSelectedGuild(state => state.select);
+    const selectChannel = useSelectedChannel(state => state.select);
     return (
-        <Tooltip label={guild.name} placement="right" hasArrow gutter={16} bg="var(--background-primary)">
+        <Tooltip label={guild.name} placement="right" gutter={16} bg="var(--background-primary)">
             <Box
                 w="50px"
                 h="50px"
@@ -86,7 +88,10 @@ const Guild: React.FC<GuildProps> = ({ guild, isSelected }) => {
                         color: 'var(--background-secondary)',
                     }
                 }}
-                onClick={() => select(guild)}
+                onClick={() => {
+                    selectChannel("overview");
+                    select(guild)
+                }}
             >
                 <Center>
                     <Text fontWeight="bold" color={!isSelected ? "white" : "var(--background-secondary)"} fontSize="xl" className="guild-text">{guild.name[0].toUpperCase()}</Text>

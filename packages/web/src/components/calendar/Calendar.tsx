@@ -17,6 +17,7 @@ const MyCalendar: React.FC = () => {
             <Calendar
                 localizer={localizer}
                 events={myEventsList}
+                views={['month', 'week']}
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: '100%', width: '100%', color: 'white' }}

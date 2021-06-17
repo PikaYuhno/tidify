@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import styled from 'styled-components';
 import AuthFormWrapper from './AuthFormWrapper';
-import { VStack, Button, Text } from '@chakra-ui/react';
+import { VStack, Text } from '@chakra-ui/react';
+import Button from "../../ui/Button";
 import { useMutation } from 'react-query';
 import { reqPasswordReset } from '../../api/auth';
 import FormInput from './FormInput';

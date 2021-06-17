@@ -37,7 +37,7 @@ const ConfirmCode: React.FC<ConfirmCodeProps> = () => {
             }}
         >
             {({ isSubmitting, errors, touched }) => (
-                <Form style={{ padding: '20px', borderRadius: '10px', background: '#3f9996' }}>
+                <Form style={{ padding: '20px', borderRadius: '10px', background: 'var(--background-secondary)' }}>
                     <VStack spacing="10px">
                         <FormInput
                             isInvalid={!!errors.code && touched.code}
@@ -48,7 +48,7 @@ const ConfirmCode: React.FC<ConfirmCodeProps> = () => {
                         <Button
                             w="100%"
                             mt={4}
-                            bg="#99d0ce"
+                            bg="var(--background-secondary-alt)"
                             isLoading={isSubmitting}
                             type="submit"
                         >

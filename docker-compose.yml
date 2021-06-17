@@ -1,0 +1,38 @@
+version: "3.7"
+
+services: 
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - './pgdata:/var/lib/postgresql/data'
+    depends_on:
+      - redis_db
+  redis_db: 
+    image: redis
+    command: ["redis-server", "--bind", "redis_db", "--port", "6379"]
+    ports:
+      - "6379:6379"
+  web:
+    build: ./packages/web
+    ports:
+      - 80:80
+    depends_on: 
+      - api
+      - redis_db
+      - db
+  api: 
+    build: 
+      context: .
+      dockerfile: ./packages/server/Dockerfile
+    ports:
+      - 81:4000
+    depends_on:
+      - redis_db
+      - db

@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../connection";
 import {UserAttributes} from '@tidify/common';
+import Message from "./Message";
 
 interface UserCreationAttributes
     extends Optional<UserAttributes, 'id' | 'role' | 'verified' | 'locked' | 'avatar'> { }
@@ -59,4 +60,15 @@ const User = sequelize.define<UserInstance>('User',
         }
     }
 )
+
+User.hasMany(Message, {
+    foreignKey: 'authorId',
+    as: 'messages'
+});
+
+Message.belongsTo(User, {
+    foreignKey: 'authorId',
+    as: 'user'
+})
+
 export default User;

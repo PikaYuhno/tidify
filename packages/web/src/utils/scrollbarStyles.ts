@@ -1,7 +1,8 @@
 export const scrollbarStyles = {
     "&::-webkit-scrollbar": {
-        width: '16px',
-        height: '16px',
+        width: '4px',
+        height: '4px',
+        borderRadius: '10px'
     },
     "&::-webkit-scrollbar-corner": {
         backgroundColor: "transparent",

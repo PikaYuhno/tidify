@@ -129,7 +129,7 @@ const KanbanBoard: React.FC<Props> = () => {
                         alignItems="center"
                         justifyContent="start"
                     >
-                        <Text fontSize="2xl" fontWeight="bold" color="var(--text-primary)">Admin Board</Text>
+                        <Text fontSize="2xl" fontWeight="bold" color="var(--text-primary)">Board</Text>
                     </Flex>
                     <Divider />
                     <HStack
@@ -242,7 +242,7 @@ const KanbanTask: React.FC<KanbanTaskProps> = ({ date, content, providedDraggabl
             ref={providedDraggable.innerRef}
             {...providedDraggable.draggableProps}
             {...providedDraggable.dragHandleProps}
-            style={{ ...providedDraggable.draggableProps.style}}
+            style={{ ...providedDraggable.draggableProps.style }}
             w="100%"
             borderRadius="10px"
             p="10px"

@@ -1,4 +1,3 @@
-import { GuildAttributes } from "@tidify/common";
 import { BASE_URL } from "../constants";
 
 export const getGuilds = async () => {

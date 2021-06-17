@@ -4,6 +4,64 @@ import Guild from '../../db/models/Guild';
 export const router = Router();
 import {InferType} from 'yup';
 import {createChannelSchema} from '@tidify/common'
+import redisClient from '../../db/redis';
+import User from '../../db/models/User';
+import GuildMember from '../../db/models/GuildMember';
+
+
+/**
+ * Accept an invite
+ * @route {POST} /api/v1/guilds/:guildId/join
+ * @routeparam {number} :guildId is the unique id for guilds.
+ * @bodyparam {string} token is the unique token for an invite
+ */
+router.get("/:guildId/join", async (req: Request, res: Response) => {
+    const guildId = req.params.guildId;
+    const token = req.body.token;
+    const userId = req.session.user!.userId;
+
+    if (!token)
+        return res.status(400).json({ message: 'Token not passed!', success: false });
+
+    // check if token is valid 
+    const val = redisClient.get(token);
+    if (!val)
+        return res.status(400).json({ message: 'Link is expired!', success: false });
+
+    const guild = await Guild.findOne({ 
+        where: {id: guildId}, 
+        include: [{
+            model: User,
+            required: true,
+            as: 'users',
+        }]
+    });
+    if (!guild)
+        return res.status(400).json({ message: 'Guild not found', success: false });
+
+    // check if user already exists in guild
+    if (guild.users!.map(u => u.id).includes(userId))
+        return res.status(400).json({ message: 'You are already in the guild!', success: false });
+
+    // add user to guild
+    const guildMember = await GuildMember.create({userId, guildId: parseInt(guildId) });
+    
+    return res.status(200).json({ message: `Successfully joined the guild ${guild.name}`, success: true });
+});
+
+
+/**
+ * Create invite link
+ * @route {POST} /api/v1/guilds/:guildId/invite
+ */
+router.get("/:guildId/join", async (req: Request, res: Response) => {
+    const guildId = req.params.guildId;
+    const userId = req.session.user!.userId;
+
+    // create token
+    // return token with 200 OK
+    return res.status(200).json({ message: "", success: true });
+});
 
 // Channels
 

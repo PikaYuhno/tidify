@@ -4,7 +4,7 @@ import * as yup from 'yup';
 
 import Message from '../../db/models/Message';
 import Channel from '../../db/models/Channel';
-import User from '../../db/models/Channel';
+import User from '../../db/models/User';
 
 export const router = Router();
 
@@ -14,22 +14,16 @@ export const router = Router();
  * @route {GET} /api/v1/channels/:channelId/messages
  */
 router.get("/:channelId/messages", async (req: Request, res: Response) => {
-    const userId = req.session.user!.userId;
     const channelId = req.params.channelId;
-    const messages = await Channel.findOne({
-        where: { id: channelId },
+    const messages = await Message.findAll({
+        where: {channelId},
         include: [{
-            model: Message,
-            required: true,
-            as: 'messages'
-        },
-        {
             model: User,
             required: true,
             as: 'user',
-        }
-    ]
-    });
+            attributes: ['username']
+        }]
+    })
 
     return res.status(200).json({ data: messages, message: 'Successfully fetched all messages!', success: true });
 })
@@ -59,7 +53,7 @@ router.post("/:channelId/messages", async (req: Request, res: Response) => {
         return res.status(400).json({message: e.errors[0], success: false});
     }
     
-    const createdMessage = await Message.create({ ...validatedMessage, channelId: channel.id, authorId: userId, guildId: channel.guildId})
+    const createdMessage = await Message.create({ ...validatedMessage, channelId: channel.id, authorId: userId, guildId: channel.guildId })
     
     return res.status(200).json({ data: createdMessage, message: 'Successfully created Message!', success: true});
 });

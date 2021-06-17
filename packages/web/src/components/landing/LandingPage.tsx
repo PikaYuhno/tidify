@@ -1,10 +1,13 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Divider, HStack, Text, VStack } from "@chakra-ui/layout";
 import CornerLogo from "../shared/CornerLogo";
+import { History } from "history";
 
-interface Props { };
+interface Props {
+    history: History;
+}
 
-const LandingPage: React.FC<Props> = () => {
+const LandingPage: React.FC<Props> = ({ history }) => {
     return (
         <>
             <Box
@@ -15,17 +18,15 @@ const LandingPage: React.FC<Props> = () => {
             >
                 <CornerLogo />
 
-
                 <Box
                     bottom="0"
                     right="0"
                     position="absolute"
-                    h="89%"
-                    w="23%"
+                    h="90%"
+                    w="360px"
                     bg="var(--background-secondary)"
                     borderTopLeftRadius="40px"
-                >
-                </Box>
+                ></Box>
 
                 <HStack
                     borderTopLeftRadius="20px"
@@ -34,19 +35,23 @@ const LandingPage: React.FC<Props> = () => {
                     position="absolute"
                     right="0"
                     bottom="80%"
-                    paddingTop="10px"
-                    paddingLeft="10px"
+                    p="10px"
                     zIndex="5"
-                    w="20%"
+                    w="325px"
                     alignItems="center"
                     justifyContent="center"
                 >
-                    <Text color="var(--background-primary)" fontSize="2xl">about us.</Text>
-                    <Divider orientation="vertical" color="black" size="xl" />
-                    <Text color="var(--background-primary)" fontSize="2xl">log in.</Text>
+                    <Text color="var(--background-primary)" fontSize="2xl">
+                        about us.
+					</Text>
+                    <Divider orientation="vertical"/>
+                    <Text color="var(--background-primary)" fontSize="2xl">
+                        log in.
+					</Text>
                     <Divider orientation="vertical" />
-                    <Text color="var(--background-primary)" fontSize="2xl">sign up.</Text>
-
+                    <Text color="var(--background-primary)" fontSize="2xl">
+                        sign up.
+					</Text>
                 </HStack>
 
                 <Box
@@ -62,10 +67,23 @@ const LandingPage: React.FC<Props> = () => {
                     paddingLeft="70px"
                 >
                     <VStack spacing={1} alignItems="flex-start">
-                        <Text fontSize="4xl" color="white">manage your teams,</Text>
-                        <Text fontSize="4xl" fontWeight="bold" color="white">with ease.</Text>
-                        <Text fontSize="md" fontWeight="bold" color="white">a project management tool with the user in mind.</Text>
-                        <Button size="md" bg="var(--background-secondary)" color="white">get started now.</Button>
+                        <Text fontSize="4xl" color="white">
+                            manage your teams,
+						</Text>
+                        <Text fontSize="4xl" fontWeight="bold" color="white">
+                            with ease.
+						</Text>
+                        <Text fontSize="md" fontWeight="bold" color="white">
+                            a project management tool with the user in mind.
+						</Text>
+                        <Button
+                            size="md"
+                            bg="var(--background-secondary)"
+                            color="white"
+                            onClick={() => history.push("/app")}
+                        >
+                            get started now.
+						</Button>
                     </VStack>
                 </Box>
 
@@ -79,7 +97,6 @@ const LandingPage: React.FC<Props> = () => {
                     borderTopLeftRadius="40px"
                 />
 
-
                 <Box
                     bottom="0"
                     right="0"
@@ -90,7 +107,6 @@ const LandingPage: React.FC<Props> = () => {
                     borderTopLeftRadius="40px"
                 />
 
-
                 <Box
                     bottom="0"
                     right="0"
@@ -99,7 +115,6 @@ const LandingPage: React.FC<Props> = () => {
                     w="80%"
                     bg="var(--background-secondary)"
                     borderTopLeftRadius="40px"
-
                 />
 
                 <Box
@@ -124,7 +139,6 @@ const LandingPage: React.FC<Props> = () => {
                     zIndex="4"
                 />
 
-
                 <Box
                     bottom="0"
                     right="0"
@@ -146,10 +160,10 @@ const LandingPage: React.FC<Props> = () => {
                     borderTopLeftRadius="40px"
                     zIndex="2"
                 />
-
             </Box>
         </>
     );
-}
+};
 
 export default LandingPage;
+
