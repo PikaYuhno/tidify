@@ -2,26 +2,22 @@ FROM node:12
 WORKDIR /usr/src/app
  
 COPY ./package.json .
+COPY ./packages/common/package.json ./packages/common/
+COPY ./packages/server/package.json ./packages/server/
 
-COPY ./packages/common ./packages/common
-COPY ./packages/server ./packages/server
+RUN yarn install --prod
 
-ENV NODE_ENV development
+#WORKDIR /usr/src/app/packages/common
+#RUN yarn build
 
-RUN yarn install
-
-ENV NODE_ENV production
-
-WORKDIR /usr/src/app/packages/common
-RUN yarn build
-
-WORKDIR /usr/src/app/packages/server
-RUN yarn build
+#WORKDIR /usr/src/app/packages/server
+#RUN yarn build
 
 COPY ./packages/common/dist ./packages/common/dist
 COPY ./packages/server/dist ./packages/server/dist
 
-WORKDIR ./packages/server/dist
-COPY .env .
+COPY ./packages/server/.env ./packages/server/
 
-CMD node index.js
+WORKDIR ./packages/server
+
+CMD ["node", "dist/index.js"]

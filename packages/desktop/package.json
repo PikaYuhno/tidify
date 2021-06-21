@@ -1,16 +1,13 @@
 {
-	"name": "desktop",
+	"name": "@tidify/desktop",
 	"version": "1.0.0",
-	"description": "",
 	"main": "index.js",
 	"scripts": {
 		"start": "electron dist/main.js",
 		"build": "tsc -b .",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"license": "MIT",
 	"devDependencies": {
 		"electron": "^13.1.2"
 	}

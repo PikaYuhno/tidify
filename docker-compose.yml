@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      - './pgdata:/var/lib/postgresql/data'
+      - ./pgdata:/var/lib/postgresql/data:z
     depends_on:
       - redis_db
   redis_db: 
@@ -20,7 +20,9 @@ services:
     ports:
       - "6379:6379"
   web:
-    build: ./packages/web
+    build: 
+      context: .
+      dockerfile: ./packages/web/Dockerfile
     ports:
       - 80:80
     depends_on: 
