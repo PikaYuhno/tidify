@@ -1,7 +1,9 @@
 import { BASE_URL } from '../constants';
 import { ResetPassword, UserLogin, UserRegister } from '../types';
 
-export const getMe = () => fetch(`${BASE_URL}/api/v1/users/me`).then(r => r.json());
+export const getMe = () => fetch(`${BASE_URL}/api/v1/users/me`, {
+    //credentials: 'include',
+}).then(r => r.json());
 
 export const register = async (user: UserRegister) => {
     const response = await fetch(`${BASE_URL}/api/v1/auth/register`, {

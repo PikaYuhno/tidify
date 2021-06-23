@@ -10,78 +10,33 @@ import {
     Draggable,
     Droppable,
     DroppableProvided,
-    DraggableLocation,
     DropResult,
     DroppableStateSnapshot, DraggableProvided, DraggableStateSnapshot
 } from 'react-beautiful-dnd';
-import { ColumnAttributes, TaskAttributes } from "@tidify/common";
+import { BoardAttributes, ColumnAttributes, TaskAttributes } from "@tidify/common";
 import { move, reorder } from '../../utils/dnd';
+import { useQuery, useQueryClient } from 'react-query';
+import { getColumns } from '../../api/board';
+import { Response } from '../../types';
 
-export interface Props { };
+interface Props {
+    board: BoardAttributes;
+};
 
-// make drops smooth
-const KanbanBoard: React.FC<Props> = () => {
-    const [tasks, setTasks] = React.useState<TaskAttributes[]>([
-        {
-            id: 1,
-            colId: 1,
-            description: "play fortnite",
-            name: "cool name",
-            userId: 2
-        }
-    ]);
-    const [columns, setColumns] = React.useState<ColumnAttributes[]>([
-        {
-            id: 1,
-            amount: tasks.length,
-            boardId: 1,
-            order: 1,
-            name: "todo",
-            tasks: tasks
-        },
-        {
-            id: 2,
-            amount: tasks.length,
-            boardId: 1,
-            order: 2,
-            name: "in progress",
-            tasks: [
-                {
-                    id: 2,
-                    colId: 1,
-                    description: "play another thing",
-                    name: "cool name",
-                    userId: 2
-                },
-                {
-                    id: 8,
-                    colId: 1,
-                    description: "play another thing 8",
-                    name: "cool name",
-                    userId: 2
-                }
-            ]
-        },
-        {
-            id: 3,
-            amount: tasks.length,
-            boardId: 3,
-            order: 3,
-            name: "done",
-            tasks: [
+const KanbanBoard: React.FC<Props> = ({ board }) => {
 
-                {
-                    id: 3,
-                    colId: 1,
-                    description: "play another thing 2",
-                    name: "cool name",
-                    userId: 2
-                }
-            ]
-        }
-    ]);
+
+    const { data, isLoading } = useQuery<Response<ColumnAttributes[]>>(
+        "columns",
+        () => getColumns(board.id)
+    );
+
+    const queryClient = useQueryClient();
+    if (isLoading) return null;
+
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
+        let columns = data!.data;
 
         if (!destination) {
             return;
@@ -94,7 +49,15 @@ const KanbanBoard: React.FC<Props> = () => {
                 source.index,
                 destination.index
             );
-            setColumns(prev => prev.map(item => item.id.toString() === source.droppableId ? { ...col, tasks } : item))
+            queryClient.setQueryData<Response<ColumnAttributes[]>>(
+                "columns",
+                (prev) => ({
+                    data: prev!.data.map(item => item.id.toString() === source.droppableId ? { ...col, tasks } : item),
+                    message: prev!.message,
+                    success: prev!.success,
+                })
+            );
+            //setColumns(prev => prev.map(item => item.id.toString() === source.droppableId ? { ...col, tasks } : item))
 
         } else {
             const sourceCol = columns.find(el => el.id.toString() === source.droppableId)!;
@@ -106,7 +69,23 @@ const KanbanBoard: React.FC<Props> = () => {
                 destination
             );
 
-            setColumns(prev => {
+            queryClient.setQueryData<Response<ColumnAttributes[]>>(
+                "columns",
+                (prev) => ({
+                    data: prev!.data.map(item => {
+                        if (item.id.toString() === source.droppableId) {
+                            return { ...sourceCol, tasks: resultFromMove[source.droppableId] }
+                        } else if (item.id.toString() === destination.droppableId) {
+                            return { ...destCol, tasks: resultFromMove[destination.droppableId] }
+                        }
+                        return item;
+                    }),
+                    message: prev!.message,
+                    success: prev!.success,
+                })
+            );
+
+            /*setColumns(prev => {
                 return prev.map(item => {
                     if (item.id.toString() === source.droppableId) {
                         return { ...sourceCol, tasks: resultFromMove[source.droppableId] }
@@ -115,7 +94,7 @@ const KanbanBoard: React.FC<Props> = () => {
                     }
                     return item;
                 })
-            })
+            })*/
         }
 
     }
@@ -129,7 +108,7 @@ const KanbanBoard: React.FC<Props> = () => {
                         alignItems="center"
                         justifyContent="start"
                     >
-                        <Text fontSize="2xl" fontWeight="bold" color="var(--text-primary)">Board</Text>
+                        <Text fontSize="2xl" fontWeight="bold" color="var(--text-primary)">{board.title}</Text>
                     </Flex>
                     <Divider />
                     <HStack
@@ -138,7 +117,7 @@ const KanbanBoard: React.FC<Props> = () => {
                         spacing={5}
                     >
 
-                        {columns.map((item, i) => (
+                        {data && data.data.map((item, i) => (
                             <KanbanColumn id={item.id} title={item.name} taskCount={2} tasks={item.tasks!} key={i}></KanbanColumn>
                         ))}
 

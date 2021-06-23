@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../connection";
 import { BoardAttributes } from "@tidify/common";
+import Column from "./Column";
 
 interface BoardCreationAttributes
     extends Optional<BoardAttributes, 'id'> { }
@@ -12,7 +13,7 @@ interface BoardInstance
     updatedAt?: Date;
 }
 
-export default sequelize.define<BoardInstance>('Board',
+const Board = sequelize.define<BoardInstance>('Board',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -21,8 +22,25 @@ export default sequelize.define<BoardInstance>('Board',
             allowNull: false,
         },
         title: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING(255),
             allowNull: false,
         },
+        guildId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
     }
 );
+
+
+Board.hasMany(Column, {
+    foreignKey: 'boardId',
+    as: 'columns'
+});
+
+Column.belongsTo(Board, {
+    foreignKey: 'boardId',
+    as: 'user'
+})
+
+export default Board;

@@ -16,3 +16,8 @@ export const createGuild = async (name: string) => {
     });
     return response.json();
 }
+
+export const getMembers = async (guildId?: number) => {
+    const response = await fetch(`${BASE_URL}/api/v1/guilds/${guildId}/members`);
+    return response.json();
+}

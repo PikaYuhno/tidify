@@ -22,6 +22,7 @@ import { router as userRouter } from './api/user';
 import { router as authRouter } from './api/auth';
 import { router as channelRouter } from './api/channel';
 import { router as guildRouter } from './api/guild';
+import { router as boardRouter } from './api/board';
 
 import User from './db/models/User';
 
@@ -66,6 +67,7 @@ app.use(adminBro.options.rootPath, verifySession, requireRoles(['admin']), admin
 app.use(`${API_PREFIX}/users`, verifySession, userRouter);
 app.use(`${API_PREFIX}/channels`, verifySession, channelRouter);
 app.use(`${API_PREFIX}/guilds`, verifySession, guildRouter);
+app.use(`${API_PREFIX}/boards`, verifySession, boardRouter);
 app.use(`${API_PREFIX}/auth`, authRouter);
 
 const testConnection = async () => {

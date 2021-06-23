@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../connection";
 import { ColumnAttributes } from "@tidify/common";
+import Task from "./Task";
 
 interface ColumnCreationAttributes
     extends Optional<ColumnAttributes, 'id'> { }
@@ -12,7 +13,7 @@ interface ColumnInstance
     updatedAt?: Date;
 }
 
-export default sequelize.define<ColumnInstance>('Column',
+const Column = sequelize.define<ColumnInstance>('Column',
     {
         id: {
             type: DataTypes.INTEGER,
@@ -38,3 +39,15 @@ export default sequelize.define<ColumnInstance>('Column',
         }
     }
 );
+
+Column.hasMany(Task, {
+    foreignKey: 'colId',
+    as: 'tasks'
+});
+
+Task.belongsTo(Column, {
+    foreignKey: 'colId',
+    as: 'column'
+})
+
+export default Column;

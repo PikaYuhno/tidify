@@ -2,7 +2,7 @@ import { Flex,} from "@chakra-ui/layout";
 import { ChannelAttributes } from "@tidify/common";
 import { useSelectedChannel } from "../../store/useSelectedChannel";
 import ChatArea from "./ChatArea";
-import Members from "./Members";
+import Members from "../shared/Members";
 import Title from "./Title";
 
 export interface Props { };

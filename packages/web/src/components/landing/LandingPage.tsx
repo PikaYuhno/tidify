@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/button";
+import Button from '../../ui/Button';
 import { Box, Divider, HStack, Text, VStack } from "@chakra-ui/layout";
 import CornerLogo from "../shared/CornerLogo";
 import { History } from "history";
