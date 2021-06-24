@@ -13,40 +13,47 @@ import { useSocket } from "../../store/useSocket";
 import shallow from "zustand/shallow";
 import Overview from "../overview/Overview";
 import Boards from "../kanban/Boards";
+import { History } from 'history';
 
-interface Props {}
+interface Props {
+    history: History;
+}
 
-const Home: React.FC<Props> = () => {
-	const selectedChannel = useSelectedChannel((state) => state.selectedChannel);
-	const { connect, disconnect } = useSocket(
-		(state) => ({ connect: state.connect, disconnect: state.disconnect }),
-		shallow
-	);
+const Home: React.FC<Props> = ({ history }) => {
+    const selectedChannel = useSelectedChannel((state) => state.selectedChannel);
+    const { connect, disconnect } = useSocket(
+        (state) => ({ connect: state.connect, disconnect: state.disconnect }),
+        shallow
+    );
 
-	React.useEffect(() => {
-		connect();
+    React.useEffect(() => {
+        const invite = new URLSearchParams(history.location.search).get("invite");
+        if (invite) {
 
-		return () => disconnect();
-	}, []);
+        }
+        connect();
 
-	const currentView = () => {
-		if (selectedChannel === "overview") return <Overview />;
-		if (selectedChannel === "members") return <Members memberCount={1} />;
-		if (selectedChannel === "calendar") return <Calendar />;
-		if (selectedChannel === "kanban") return <Boards />;
-		return <Chat />;
-	};
+        return () => disconnect();
+    }, []);
 
-	return (
-		<>
-			<LogoOverlay />
-			<Navigation />
-			<Layout>
-				<ChannelSidebar />
-				{currentView()}
-			</Layout>
-		</>
-	);
+    const currentView = () => {
+        if (selectedChannel === "overview") return <Overview />;
+        if (selectedChannel === "members") return <Members memberCount={1} />;
+        if (selectedChannel === "calendar") return <Calendar />;
+        if (selectedChannel === "kanban") return <Boards />;
+        return <Chat />;
+    };
+
+    return (
+        <>
+            <LogoOverlay />
+            <Navigation />
+            <Layout>
+                <ChannelSidebar />
+                {currentView()}
+            </Layout>
+        </>
+    );
 };
 
 export default Home;

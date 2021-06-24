@@ -20,6 +20,7 @@ import { createEvent } from "../../api/event";
 import { Response } from "../../types";
 import FormInput from "../auth/FormInput";
 import DatePicker from "../../ui/DatePicker";
+import { useSelectedGuild } from "../../store/useSelectedGuild";
 
 interface Props {
     disclosure: UseDisclosureProps;
@@ -31,6 +32,7 @@ const CreateEventModal: React.FC<Props> = ({
     currentDate,
 }) => {
     const queryClient = useQueryClient();
+    const selectedGuild = useSelectedGuild(state => state.selectedGuild);
 
     const mutation = useMutation(createEvent, {
         onMutate: (data: Omit<EventAttributes, "id">) => {
@@ -88,7 +90,7 @@ const CreateEventModal: React.FC<Props> = ({
                                     title: values.title,
                                     start: currentDate,
                                     end: moment(values.end).toDate(),
-                                    guildId: 1,
+                                    guildId: selectedGuild!.id,
                                 });
 
                                 onClose && onClose();

@@ -17,7 +17,6 @@ router.get("/:boardId/columns", async (req: Request, res: Response) => {
         where: { boardId } ,
         include: [{
             model: Task,
-            required: true,
             as: 'tasks'
         }]
 
@@ -41,7 +40,7 @@ router.post("/:boardId/columns", async (req: Request, res: Response) => {
         return res.status(400).json({ message: e.errors[0], success: false });
     }
 
-    const createdColumn = await Column.create({ ...validatedEvent, amount: 0, order: 1,  boardId: parseInt(boardId) });
+    const createdColumn = await Column.create({ ...validatedEvent, amount: 0, order: 1,  boardId: parseInt(boardId),});
 
     return res.status(200).json({ data: createdColumn, message: 'Successfully created column!', success: true });
 });

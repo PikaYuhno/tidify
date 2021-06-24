@@ -16,7 +16,7 @@ import crypto from 'crypto';
  * Get invite info
  * @route {POST} /api/v1/guilds/invites/info
  */
-router.post("/:guildId/invite", async (req: Request, res: Response) => {
+router.post("/invites/info", async (req: Request, res: Response) => {
     const token = req.body.token;
 
     if (!token)
@@ -78,6 +78,11 @@ router.post("/:guildId/join", async (req: Request, res: Response) => {
 router.post("/:guildId/invite", async (req: Request, res: Response) => {
     const guildId = req.params.guildId;
     const userId = req.session.user!.userId;
+
+    const inviteInfos = JSON.stringify({
+        guildId,
+        userId   
+    })
 
     // create hash & save in redis
     const hash = crypto.randomBytes(20).toString('hex');

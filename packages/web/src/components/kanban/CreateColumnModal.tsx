@@ -1,35 +1,39 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, UseDisclosureProps } from '@chakra-ui/react';
-import { GuildAttributes } from '@tidify/common';
+import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from '@chakra-ui/react';
+import { BoardAttributes, ColumnAttributes } from '@tidify/common';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { createGuild } from '../../api/guild';
-import { useMe } from '../../hooks/useMe';
+import { createColumn } from '../../api/board';
 import { Response } from '../../types';
 import FormInput from '../auth/FormInput';
 
 export interface Props {
-    disclosure: UseDisclosureProps;
+    board: BoardAttributes | null;
+    onClose: () => void;
 };
 
-const CreateGuildModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, children }) => {
-
-    const { data, isLoading } = useMe();
+const CreateColumnModal: React.FC<Props> = ({ onClose, board, children }) => {
 
     const queryClient = useQueryClient();
 
-    const mutation = useMutation(createGuild, {
-        onMutate: async (name: string) => {
-            await queryClient.cancelQueries("guilds");
+    const mutation = useMutation(createColumn, {
+        onMutate: async (params: Omit<ColumnAttributes, "id" | "amount" | "order">) => {
+            await queryClient.cancelQueries("columns");
 
-            const snapshot = queryClient.getQueryData<Response<GuildAttributes[]>>("guilds");
+            const snapshot = queryClient.getQueryData<Response<ColumnAttributes[]>>("columns");
 
             console.log("Snapshot", snapshot);
 
-            snapshot && queryClient.setQueryData<Response<GuildAttributes[]>>("guilds", prev => ({
+            snapshot && queryClient.setQueryData<Response<ColumnAttributes[]>>("columns", prev => ({
                 data: [
                     ...snapshot.data,
-                    { name, id: Math.random(), ownerId: data.data.userId },
+                    {
+                        name: params.name,
+                        id: Math.random(),
+                        boardId: params.boardId,
+                        amount: 0,
+                        order: 0,
+                    },
                 ],
                 message: prev!.message,
                 success: prev!.success
@@ -39,18 +43,18 @@ const CreateGuildModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, ch
         },
         onError: (_, __, context) => {
             if (context?.snapshot) {
-                queryClient.setQueryData<Response<GuildAttributes[]>>('guilds', context.snapshot);
+                queryClient.setQueryData<Response<ColumnAttributes[]>>('columns', context.snapshot);
             }
         },
-        onSettled: () => queryClient.invalidateQueries("guilds"),
+        onSettled: () => queryClient.invalidateQueries("columns"),
     })
 
     return (
         <>
-            <Modal isOpen={isOpen!} onClose={onClose!} isCentered >
+            <Modal isOpen={!!board} onClose={onClose} isCentered >
                 <ModalOverlay />
                 <ModalContent bg="var(--background-secondary)">
-                    <ModalHeader color="white">Create new Guild</ModalHeader>
+                    <ModalHeader color="white">Create new Column</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody
                         paddingBottom="24px"
@@ -59,7 +63,10 @@ const CreateGuildModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, ch
                             initialValues={{ name: '' }}
                             onSubmit={(values, { setSubmitting }) => {
                                 setSubmitting(true);
-                                mutation.mutate(values.name);
+                                mutation.mutate({
+                                    name: values.name,
+                                    boardId: board!.id,
+                                });
 
                                 onClose && onClose();
                                 setSubmitting(false);
@@ -69,7 +76,7 @@ const CreateGuildModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, ch
                                 <Form>
                                     <FormInput
                                         isInvalid={!!errors.name && touched.name}
-                                        name="name" type="text" placeholder="Guild name"
+                                        name="name" type="text" placeholder="Column name"
                                         errorMessage={errors.name}
                                         label="Name"
                                     />
@@ -94,4 +101,4 @@ const CreateGuildModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, ch
     )
 }
 
-export default CreateGuildModal;
+export default CreateColumnModal;

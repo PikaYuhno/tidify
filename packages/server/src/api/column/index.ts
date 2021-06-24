@@ -35,7 +35,7 @@ router.post("/:columnId/tasks", async (req: Request, res: Response) => {
 
     const createdTask = await Task.create({ ...validatedEvent, colId: parseInt(columnId), userId});
 
-    return res.status(200).json({ data: createdTask, message: 'Successfully created column!', success: true });
+    return res.status(200).json({ data: createdTask, message: 'Successfully created task!', success: true });
 });
 
 /**

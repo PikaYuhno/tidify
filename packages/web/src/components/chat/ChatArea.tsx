@@ -11,83 +11,82 @@ import { scrollbarStyles } from "../../utils/scrollbarStyles";
 import { useSocket } from "../../store/useSocket";
 import { Response } from "../../types";
 
-interface Props { }
+interface Props {}
 
 const ChatArea: React.FC<Props> = () => {
-    const selectedChannel = useSelectedChannel(
-        (state) => state.selectedChannel
-    ) as ChannelAttributes;
-    const { data, isLoading } = useQuery(["messages", selectedChannel.id], () =>
-        getMessages(selectedChannel.id)
-    );
-    const socket = useSocket((state) => state.socket);
-    const queryClient = useQueryClient();
+	const selectedChannel = useSelectedChannel(
+		(state) => state.selectedChannel
+	) as ChannelAttributes;
+	const { data, isLoading } = useQuery(["messages", selectedChannel.id], () =>
+		getMessages(selectedChannel.id)
+	);
+	const socket = useSocket((state) => state.socket);
+	const queryClient = useQueryClient();
 
-    React.useEffect(() => {
-        console.log("Listening on message");
-        const messageListenerId = socket?.on(
-            "message",
-            (data: MessageAttributes) => {
-        console.log("All Listeners", socket?.listeners)
-                console.log("Got data", data);
-                console.log("QueryCache", queryClient.getQueryCache());
-                queryClient.setQueryData<Response<MessageAttributes[]>>(
-                    ["messages", data.channelId],
-                    (prev) => {
-                        console.log("DEBUG", [...prev!.data, data]);
-                        return {
-                            data: [...prev!.data, data],
-                            success: prev!.success,
-                            message: prev!.message,
-                        };
-                    }
-                );
-            }
-        );
-        return () => { 
-            console.log(messageListenerId)
-            console.log("UNMOUNT");
-            messageListenerId && socket?.off(messageListenerId.id); 
-        }
-    }, []);
-    React.useEffect(() => {
-        socket?.off("messages");
-    }, [selectedChannel]);
+	React.useEffect(() => {
+		console.log("Listening on message");
+		socket?.off("message");
+		const messageListenerId = socket?.on(
+			"message",
+			(data: MessageAttributes) => {
+				console.log("All Listeners", socket?.listeners);
+				console.log("Got data", data);
+				console.log("QueryCache", queryClient.getQueryCache());
+				queryClient.setQueryData<Response<MessageAttributes[]>>(
+					["messages", data.channelId],
+					(prev) => {
+						return {
+							data: [...prev!.data, data],
+							success: prev!.success,
+							message: prev!.message,
+						};
+					}
+				);
+			}
+		);
+		return () => {
+			console.log(messageListenerId);
+			console.log("UNMOUNT");
+			messageListenerId && socket?.off(messageListenerId.id);
+		};
+	}, []);
+	React.useEffect(() => {
+		socket?.off("messages");
+	}, [selectedChannel]);
 
-    if (isLoading) return null;
+	if (isLoading) return null;
 
-    return (
-        <Box
-            flex="20"
-            bg="var(--background-secondary-alt)"
-            borderRadius="10px"
-            margin="10px"
-            overflow="hidden"
-        >
-            <Flex flexDirection="column" p="0 15px" h="100%">
-                <VStack
-                    spacing="0"
-                    flex="10"
-                    overflow="auto"
-                    sx={{
-                        ...scrollbarStyles,
-                    }}
-                >
-                    {data.data.map((m: MessageAttributes) => (
-                        <MessageBox
-                            key={m.id}
-                            username={m.user!.username}
-                            createdAt={DateTime.fromISO(m.createdAt!.toString()).toISODate()}
-                            content={m.content}
-                        />
-                    ))}
-                </VStack>
+	return (
+		<Box
+			flex="20"
+			bg="var(--background-secondary-alt)"
+			borderRadius="10px"
+			margin="10px"
+			overflow="hidden"
+		>
+			<Flex flexDirection="column" p="0 15px" h="100%">
+				<VStack
+					spacing="0"
+					flex="10"
+					overflow="auto"
+					sx={{
+						...scrollbarStyles,
+					}}
+				>
+					{data.data.map((m: MessageAttributes) => (
+						<MessageBox
+							key={m.id}
+							username={m.user!.username}
+							createdAt={DateTime.fromISO(m.createdAt!.toString()).toISODate()}
+							content={m.content}
+						/>
+					))}
+				</VStack>
 
-                <ChatInput />
-            </Flex>
-        </Box>
-    );
+				<ChatInput />
+			</Flex>
+		</Box>
+	);
 };
 
 export default ChatArea;
-
