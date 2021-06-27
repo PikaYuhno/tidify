@@ -14,7 +14,6 @@ const PrivateRoute: React.FC<Props> = ({ excludedRoles, ...rest }) => {
     if (isLoading) {
         return <Loader />
     }
-    console.log("useMe - ", data);
     if (!data.success) {
         return <Redirect to="/auth/login" />
     }

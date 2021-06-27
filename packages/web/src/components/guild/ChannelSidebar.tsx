@@ -23,7 +23,6 @@ const ChannelSidebar: React.FC<Props> = React.memo(({ history }) => {
     const { select, selectedChannel } = useSelectedChannel();
     const selectedGuild = useSelectedGuild(state => state.selectedGuild);
 
-    console.log("ChannelSidbar - Rerendered", selectedGuild, selectedChannel);
     const channelQuery = useQuery(['channels', selectedGuild?.id], () => getChannels(selectedGuild?.id), { enabled: !!selectedGuild });
 
     const disclosure = useDisclosure();

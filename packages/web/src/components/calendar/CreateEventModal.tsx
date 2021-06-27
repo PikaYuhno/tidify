@@ -85,7 +85,6 @@ const CreateEventModal: React.FC<Props> = ({
                             }}
                             onSubmit={(values, { setSubmitting }) => {
                                 setSubmitting(true);
-                                console.log("values", values);
                                 mutation.mutate({
                                     title: values.title,
                                     start: currentDate,

@@ -6,7 +6,6 @@ export const getGuilds = async () => {
 }
 
 export const createGuild = async (name: string) => {
-    console.log("Here", name);
     const response = await fetch(`${BASE_URL}/api/v1/users/guilds`, {
         method: 'POST',
         headers: {

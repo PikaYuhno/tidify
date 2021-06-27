@@ -17,19 +17,15 @@ export default (server: HTTPServer) => {
         console.log(socket.id + " connected!");
 
         socket.on('join-channel', (data: JoinChannelData) => {
-            console.log("All rooms", socket.rooms);
             socket.rooms.forEach(el => {
                 if (el === socket.id) return;
                 socket.leave(el);
             })
-            console.log("All rooms", socket.rooms);
             let room = `${channelPrefix}${data.channelId}`
-            console.log("Joined Room", room);
             socket.join(room);
         });
 
         socket.on('message', (data: MessageAttributes) => {
-            console.log("Received message", data.content);
             io.to(`${channelPrefix}${data.channelId}`).emit("message", data);
         })
 

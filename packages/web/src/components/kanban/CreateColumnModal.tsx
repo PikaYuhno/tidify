@@ -22,8 +22,6 @@ const CreateColumnModal: React.FC<Props> = ({ onClose, board, children }) => {
 
             const snapshot = queryClient.getQueryData<Response<ColumnAttributes[]>>("columns");
 
-            console.log("Snapshot", snapshot);
-
             snapshot && queryClient.setQueryData<Response<ColumnAttributes[]>>("columns", prev => ({
                 data: [
                     ...snapshot.data,

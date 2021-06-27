@@ -109,8 +109,6 @@ router.get("/:guildId/members", async (req: Request, res: Response) => {
             exclude: ['password']
         }
     })
-    console.log("Members", members);
-
 
     return res.status(200).json({ data: members, message: "Successfully found all members!", success: true });
 });

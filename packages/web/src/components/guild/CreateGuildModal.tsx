@@ -24,8 +24,6 @@ const CreateGuildModal: React.FC<Props> = ({ disclosure: { onClose, isOpen }, ch
 
             const snapshot = queryClient.getQueryData<Response<GuildAttributes[]>>("guilds");
 
-            console.log("Snapshot", snapshot);
-
             snapshot && queryClient.setQueryData<Response<GuildAttributes[]>>("guilds", prev => ({
                 data: [
                     ...snapshot.data,

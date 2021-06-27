@@ -32,7 +32,6 @@ router.get("/me", async (req: Request, res: Response) => {
 **/
 router.post("/", async (req: Request, res: Response) => {
     const user = req.body;
-    console.log(user);
     let validatedUser = null;
     try {
         validatedUser = await createUserSchema.validate(user);

@@ -89,6 +89,6 @@ const testConnection = async () => {
 testConnection().then(async () => {
     await sequelize.sync();
 });
-console.log("ENV", process.env.NODE_ENV);
+
 const server: Server = app.listen(PORT, () => console.log(`🚀 Started Server on port ${PORT}`));
 wsServer(server);
