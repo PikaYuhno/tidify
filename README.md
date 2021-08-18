@@ -8,6 +8,8 @@
 
 [landing page]: https://github.com/PikaYuhno/tidify/blob/main/screenshots/LandingPage.png
 
+![Landing page](landing page)
+
 ## About
 Tidify is a project management tool that allows you to have a better overview of your project and helps you to become more productive and efficient.
 ## Prerequisites
