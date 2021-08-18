@@ -5,7 +5,9 @@
 <p align="center">
   <strong>A project management tool with the user in mind.</strong>
 </p>
-[landing page](https://github.com/PikaYuhno/tidify/blob/main/screenshots/LandingPage.png)
+
+[landing page]: https://github.com/PikaYuhno/tidify/blob/main/screenshots/LandingPage.png
+
 ## About
 Tidify is a project management tool that allows you to have a better overview of your project and helps you to become more productive and efficient.
 ## Prerequisites
