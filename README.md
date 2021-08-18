@@ -40,6 +40,8 @@ yarn start
 cd ./packages/server
 yarn dev
 ```
+## Screenshots
+You can find some screenshots [here](https://github.com/PikaYuhno/tidify/tree/main/screenshots).
 ## Features
 ### Main Features
 - Authentication
